@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BoatSystem.Core.Models
 {
-    public class RegisterModel
+    public class RegisterOwnerModel
     {
         public string UserName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string BusinessName { get; set; } // إضافة تفاصيل محددة للمالك
     }
-
 }

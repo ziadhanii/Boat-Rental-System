@@ -1,4 +1,4 @@
-﻿namespace BoatRentalSystem.Application
+﻿namespace BoatSystem.Application.Services
 {
     using BoatRentalSystem.Core.Entities;
     using BoatRentalSystem.Core.Interfaces;
@@ -28,7 +28,7 @@
 
         public Task UpdateCountry(Country Country)
         {
-            return _CountryRepository.UpdateAsync(Country.Id,Country);
+            return _CountryRepository.UpdateAsync(Country.Id, Country);
         }
 
         public Task DeleteCountry(int id)

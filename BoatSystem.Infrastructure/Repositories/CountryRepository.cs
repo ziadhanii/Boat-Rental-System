@@ -1,4 +1,4 @@
-﻿namespace BoatRentalSystem.Infrastructure
+﻿namespace BoatSystem.Infrastructure.Repositories
 {
     using BoatRentalSystem.Core.Entities;
     using BoatRentalSystem.Core.Interfaces;
@@ -12,7 +12,7 @@
 
 
         public CountryRepository(ApplicationDbContext dbContext) : base(dbContext) { }
-       
+
         //    public async Task AddCountry(Country Country)
         //    {
         //        await _dbContext.Countries.AddAsync(Country);

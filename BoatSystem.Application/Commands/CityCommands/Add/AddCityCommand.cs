@@ -9,8 +9,8 @@
     using System.Threading;
     using System.Threading.Tasks;
     using BoatRentalSystem.Core.Entities;
-    using BoatSystem.Application;
     using BoatSystem.Application.ViewModels;
+    using BoatSystem.Application.Commands;
 
     public class AddCityCommand : ICommand<CityViewModel>
     {

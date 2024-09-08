@@ -52,5 +52,19 @@ namespace BoatSystem.Infrastructure.Repositories
         {
             return await _context.Boats.Where(b => b.OwnerId == ownerId).ToListAsync();
         }
+
+        public async Task<IEnumerable<Boat>> GetBoatsByNameAsync(string name)
+        {
+            return await _context.Boats
+                .Where(b => b.Name.Contains(name))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Boat>> GetUnapprovedBoatsAsync()
+        {
+            return await _context.Boats
+                .Where(b => b.IsApproved == false)
+                .ToListAsync();
+        }
     }
 }

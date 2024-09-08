@@ -12,5 +12,7 @@ namespace BoatSystem.Core.Interfaces
         Task UpdateAsync(Reservation reservation);
         Task DeleteAsync(int id);
         Task<IEnumerable<Reservation>> GetReservationsByTripIdAsync(int tripId);
+        Task<IEnumerable<Reservation>> GetAllIncludingDetailsAsync();
+
     }
 }

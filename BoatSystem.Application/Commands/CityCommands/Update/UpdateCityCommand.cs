@@ -2,7 +2,7 @@
 {
     using AutoMapper;
     using BoatRentalSystem.Core.Interfaces;
-    using BoatSystem.Application;
+    using BoatSystem.Application.Commands;
     using BoatSystem.Application.ViewModels;
     using System;
     using System.Collections.Generic;

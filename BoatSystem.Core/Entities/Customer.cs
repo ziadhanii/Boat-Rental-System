@@ -14,7 +14,8 @@ namespace BoatSystem.Core.Entities
         public decimal WalletBalance { get; set; } = 0.00M;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-
+        [NotMapped] // This attribute prevents this property from being mapped to the database
+        public string FullName => $"{FirstName} {LastName}";
         // Navigation property
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; } // الربط مع ApplicationUser

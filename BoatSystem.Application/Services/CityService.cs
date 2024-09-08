@@ -1,4 +1,4 @@
-﻿namespace BoatRentalSystem.Application
+﻿namespace BoatSystem.Application.Services
 {
     using BoatRentalSystem.Core.Entities;
     using BoatRentalSystem.Core.Interfaces;
@@ -29,7 +29,7 @@
 
         public Task UpdateCity(City city)
         {
-            return _cityRepository.UpdateAsync(city.Id,city);
+            return _cityRepository.UpdateAsync(city.Id, city);
         }
 
         public Task DeleteCity(int id)

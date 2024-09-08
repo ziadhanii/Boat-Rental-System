@@ -1,4 +1,4 @@
-﻿namespace BoatRentalSystem.Infrastructure
+﻿namespace BoatSystem.Infrastructure.Repositories
 {
     using BoatRentalSystem.Core.Entities;
     using BoatRentalSystem.Core.Interfaces;
@@ -7,24 +7,6 @@
     using Microsoft.EntityFrameworkCore;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
-
-
-    public class OwnerRepository : BaseRepository<Owner>, IOwnerRepository
-    {
-        private readonly ApplicationDbContext _dbContext;
-
-        public OwnerRepository(ApplicationDbContext dbContext) : base(dbContext) 
-        {
-            _dbContext = dbContext;
-        }
-        public async Task<Owner> GetByUserIdAsync(string userId)
-        {
-            return await _dbContext.Owners.FirstOrDefaultAsync(e => e.UserId == userId);
-        }
-    }
-
-
 
     public class CityRepository : BaseRepository<City>, ICityRepository
     {

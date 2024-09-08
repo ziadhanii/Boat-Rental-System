@@ -12,5 +12,7 @@ namespace BoatSystem.Core.Interfaces
         Task UpdateAsync(Boat boat);
         Task DeleteAsync(int id);
         Task<IEnumerable<Boat>> GetBoatsByOwnerIdAsync(int ownerId);
+        Task<IEnumerable<Boat>> GetBoatsByNameAsync(string name);
+        Task<IEnumerable<Boat>> GetUnapprovedBoatsAsync();
     }
 }

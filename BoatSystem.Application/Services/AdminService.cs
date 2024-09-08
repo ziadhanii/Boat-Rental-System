@@ -3,7 +3,7 @@ using BoatSystem.Core.Entities;
 using BoatSystem.Core.Interfaces;
 using System.Threading.Tasks;
 
-namespace BoatSystem.Services
+namespace BoatSystem.Application.Services
 {
     public class AdminService : IAdminService
     {

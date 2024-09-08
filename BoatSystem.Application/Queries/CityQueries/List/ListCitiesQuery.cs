@@ -1,17 +1,15 @@
 ﻿namespace BoatSystem.Application.Queries.CityQueries.List
 {
     using AutoMapper;
-    using BoatRentalSystem.Core.Interfaces;
+    using BoatSystem.Core.Interfaces;
     using BoatSystem.Application;
     using BoatSystem.Application.ViewModels;
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using BoatRentalSystem.Core.Interfaces;
 
-    public class ListCitiesQuery : ICommand<IEnumerable<CityViewModel>>
+    public class ListCitiesQuery : IQuery<IEnumerable<CityViewModel>>
     {
     }
 
@@ -25,6 +23,7 @@
             _cityRepository = cityRepository;
             _mapper = mapper;
         }
+
         public async Task<IEnumerable<CityViewModel>> Handle(ListCitiesQuery request, CancellationToken cancellationToken)
         {
             var cities = await _cityRepository.GetAllAsync();

@@ -12,12 +12,6 @@
         Task DeleteAsync(int id);
     }
 
-
-    public interface IOwnerRepository : IBaseRepository<Owner>
-    {
-        Task<Owner> GetByUserIdAsync(string userId);
-    }
-
     public interface ICityRepository : IBaseRepository<City>
     {
         //Task<IEnumerable<City>> GetAllCities();

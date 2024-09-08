@@ -1,22 +1,20 @@
-﻿using BoatSystem.Core.Entities;
+﻿using BoatSystem.Application.DTOs;
+using BoatSystem.Core.Entities;
 using BoatSystem.Core.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BoatSystem.Application.Commands.ReservationCommands
 {
-    public class UpdateReservationCommand : IRequest
+    public class UpdateReservationCommand : IRequest<bool>
     {
         public int ReservationId { get; set; }
-        public DateTime NewDate { get; set; }
-        // باقي الخصائص التي يمكن تعديلها
+        public UpdateReservationDto ReservationDto { get; set; }
     }
 
-    public class UpdateReservationCommandHandler : IRequestHandler<UpdateReservationCommand>
+    public class UpdateReservationCommandHandler : IRequestHandler<UpdateReservationCommand, bool>
     {
         private readonly IReservationRepository _reservationRepository;
 
@@ -25,15 +23,37 @@ namespace BoatSystem.Application.Commands.ReservationCommands
             _reservationRepository = reservationRepository;
         }
 
-        public async Task Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateReservationCommand request, CancellationToken cancellationToken)
         {
             var reservation = await _reservationRepository.GetByIdAsync(request.ReservationId);
             if (reservation == null)
                 throw new InvalidOperationException($"Reservation with ID {request.ReservationId} not found.");
 
-            reservation.ReservationDate = request.NewDate; // تأكد من استخدام الخاصية الصحيحة
+            if (request.ReservationDto.NewDate.HasValue)
+            {
+                reservation.ReservationDate = request.ReservationDto.NewDate.Value;
+            }
+
+            if (request.ReservationDto.NumPeople.HasValue)
+            {
+                reservation.NumPeople = request.ReservationDto.NumPeople.Value;
+            }
+
+            if (request.ReservationDto.TotalPrice.HasValue)
+            {
+                reservation.TotalPrice = request.ReservationDto.TotalPrice.Value;
+            }
+
+            if (request.ReservationDto.Status.HasValue)
+            {
+                reservation.Status = request.ReservationDto.Status.Value;
+            }
+
+            reservation.UpdatedAt = DateTime.UtcNow;
+
             await _reservationRepository.UpdateAsync(reservation);
+
+            return true; // Return true to indicate success
         }
     }
-
 }

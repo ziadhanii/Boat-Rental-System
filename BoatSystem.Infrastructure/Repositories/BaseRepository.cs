@@ -1,4 +1,4 @@
-﻿namespace BoatRentalSystem.Infrastructure
+﻿namespace BoatSystem.Infrastructure.Repositories
 {
     using BoatRentalSystem.Core.Interfaces;
     using BoatSystem.Infrastructure.Data;
@@ -49,7 +49,7 @@
             if (existingEntity != null)
             {
                 _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
-               await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             else
             {

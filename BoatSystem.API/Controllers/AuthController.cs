@@ -1,91 +1,63 @@
-﻿namespace BoatSystem.API.Controllers
+﻿using BoatSystem.Core.Interfaces;
+using BoatSystem.Core.Models.BoatSystem.Application.Models;
+using BoatSystem.Core.Models;
+using Microsoft.AspNetCore.Mvc;
+using BoatSystem.Infrastructure.Repositories;
+using BoatSystem.Application;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
 {
-    using BoatSystem.Application;
-    using BoatSystem.Core.Interfaces;
-    using BoatSystem.Core.Models;
-    using MediatR;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
+    private readonly IAuthService _authService;
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AAuthController : ControllerBase
+    public AuthController(IAuthService authService)
     {
-        private readonly IAuthService _authService;
-        private readonly IMediator _mediator;
-
-        public AAuthController(IAuthService authService, IMediator mediator)
-        {
-            _authService = authService;
-            _mediator = mediator;
-        }
-
-
-
-
-        [HttpPost("register-owner")]
-        public async Task<IActionResult> RegisterOwner(RegisterOwnerCommand command)
-        {
-            var result = await _mediator.Send(command);
-            if(result == null)
-            {
-                return BadRequest(result.Message);
-            }
-            return Ok(result);
-        }
-
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginCommand command)
-        {
-            var result = await _mediator.Send(command);
-            if (result == null)
-            {
-                return BadRequest(result.Message);
-            }
-            return Ok(result);
-        }
-
-
-
-        [HttpPost("verify-owner")]
-        public async Task<IActionResult> VerifyOwner(VerifyOwnerCommand command)
-        {
-            var result = await _mediator.Send(command);
-            if (result == null)
-            {
-                return BadRequest(result.Message);
-            }
-            return Ok(result);
-        }
-
-
-        //[HttpPost("register")]
-        //public async Task<IActionResult> Register([FromBody] RegisterModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    var result = await _authService.RegisterAsync(model);
-        //    if (!result.IsAuthenticated)
-        //        return BadRequest(result.Message);
-
-        //    return Ok(result);
-        //}
-
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] TokenRequestModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-        //    var result = await _authService.Login(model);
-        //    if (!result.IsAuthenticated)
-        //        return BadRequest(result.Message);
-
-        //    return Ok(result);
-        //}
+        _authService = authService;
     }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] TokenRequestModel model)
+    {
+        var authModel = await _authService.Login(model);
+        if (!authModel.IsAuthenticated)
+        {
+            return Unauthorized(new { Message = authModel.Message });
+        }
+        return Ok(authModel);
+    }
+
+    [HttpPost("register-customer")]
+    public async Task<IActionResult> RegisterCustomer([FromBody] RegisterCustomerModel model)
+    {
+        var authModel = await _authService.RegisterCustomerAsync(model);
+        if (!authModel.IsAuthenticated && !string.IsNullOrEmpty(authModel.Message))
+        {
+            return BadRequest(new { Message = authModel.Message });
+        }
+        return Ok(authModel); // Ensure the complete `AuthModel` is returned
+    }
+
+    [HttpPost("register-owner")]
+    public async Task<IActionResult> RegisterOwner([FromBody] RegisterOwnerModel model)
+    {
+        var authModel = await _authService.RegisterOwnerAsync(model);
+        if (!authModel.IsAuthenticated)
+        {
+            return BadRequest(new { Message = authModel.Message });
+        }
+        return Ok(authModel);
+    }
+
+    [HttpPost("register-admin")]
+    public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminModel model)
+    {
+        var authModel = await _authService.RegisterAdminAsync(model);
+        if (!authModel.IsAuthenticated)
+        {
+            return BadRequest(new { Message = authModel.Message });
+        }
+        return Ok(authModel);
+    }
+
 }
