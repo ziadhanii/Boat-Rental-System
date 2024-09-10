@@ -21,6 +21,7 @@ namespace BoatSystem.Core.Entities
         public DateTime StartedAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public int DurationHours { get; set; } // إضافة هذه الخاصية
 
         // Navigation properties
         [ForeignKey("OwnerId")]

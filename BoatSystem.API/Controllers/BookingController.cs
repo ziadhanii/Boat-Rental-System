@@ -1,115 +1,156 @@
-﻿//using BoatSystem.Core.DTOs;
-//using BoatSystem.Core.Entities;
-//using BoatSystem.Core.Interfaces;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
-//using System.Security.Claims;
-//using System.Threading.Tasks;
-//using System.Linq;
-//using BoatSystem.Application.Services;
+﻿using BoatSystem.Core.Interfaces;
+using BoatSystem.Core.DTOs;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Serilog;
+using BoatSystem.Application.Commands.Wallet;
+using BoatSystem.Core.Exceptions;
+using BoatSystem.Application.Queries;
+using BoatSystem.Application.Commands;
+using BoatSystem.Application.Services;
 
-//[Authorize(Roles = "Customer")]
-//[ApiController]
-//[Route("api/[controller]")]
-//public class BookingController : ControllerBase
-//{
-//    private readonly IBookingService _bookingService;
-//    private readonly ILogger<BookingController> _logger;
+[ApiController]
+[Route("api/[controller]")]
+public class BookingsController : ControllerBase
+{
+    private readonly IMediator _mediator;
+    private readonly ICostCalculatorService _costCalculator;
+    private readonly IBoatService _boatService;
+    private readonly IBookingService _bookingService; // إضافة الخدمة الجديدة
+    private readonly ILogger<BookingsController> _logger;
 
-//    public BookingController(IBookingService bookingService, ILogger<BookingController> logger)
-//    {
-//        _bookingService = bookingService;
-//        _logger = logger;
-//    }
+    public BookingsController(
+        IMediator mediator,
+        ICostCalculatorService costCalculator,
+        IBoatService boatService,
+        IBookingService bookingService, // إضافة الخدمة الجديدة
+        ILogger<BookingsController> logger)
+    {
+        _mediator = mediator;
+        _costCalculator = costCalculator;
+        _boatService = boatService;
+        _bookingService = bookingService; // تعيين الخدمة الجديدة
+        _logger = logger;
+    }
 
-//    [HttpPost("book")]
-//    public async Task<IActionResult> BookTrip([FromBody] BoatBookingDto bookingDto)
-//    {
-//        if (bookingDto == null)
-//        {
-//            _logger.LogWarning("BookTrip called with null bookingDto.");
-//            return BadRequest(new { Message = "Please provide valid booking data." });
-//        }
+    //[HttpPost("book")]
+    //public async Task<IActionResult> BookTrip([FromBody] BookTripCommand command)
+    //{
+    //    if (command == null)
+    //    {
+    //        _logger.LogWarning("Booking request received with null command.");
+    //        return BadRequest("Invalid booking data.");
+    //    }
 
-//        var userId = User.FindFirst("UserId")?.Value;
-//        if (string.IsNullOrEmpty(userId))
-//        {
-//            _logger.LogWarning("User ID not found in token.");
-//            return Unauthorized("User ID not found in token.");
-//        }
-//        var customerId = await _bookingService.GetCustomerIdByUserIdAsync(userId);
-//        if (customerId == null)
-//        {
-//            _logger.LogWarning($"Customer ID not found for User ID: {userId}");
-//            return Unauthorized(new { Message = "Unable to find customer associated with this User ID." });
-//        }
+    //    try
+    //    {
+    //        var booking = await _mediator.Send(command);
+    //        return Ok(booking);
+    //    }
+    //    catch (NotFoundException ex)
+    //    {
+    //        _logger.LogError(ex, "Error occurred while processing the booking request.");
+    //        return NotFound(ex.Message);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "An error occurred while processing the booking request.");
+    //        return StatusCode(500, "Internal server error");
+    //    }
+    //}
 
-//        if (!await _bookingService.IsTripExistsAsync(bookingDto.TripId))
-//        {
-//            _logger.LogWarning($"Trip with ID {bookingDto.TripId} not found.");
-//            return BadRequest(new { Message = "The specified trip does not exist." });
-//        }
+    [HttpPost("calculate-total-cost")]
+    public async Task<IActionResult> CalculateTotalCost([FromBody] TotalCostRequestDto request)
+    {
+        if (request == null)
+        {
+            _logger.LogWarning("Cost calculation request received with null data.");
+            return BadRequest("Invalid request data.");
+        }
 
-//        var booking = new BoatBooking
-//        {
-//            CustomerId = customerId.Value,
-//            BoatId = bookingDto.BoatId,
-//            TripId = bookingDto.TripId,
-//            BookingDate = DateTime.UtcNow,
-//            DurationHours = bookingDto.DurationHours,
-//            TotalPrice = bookingDto.TotalPrice,
-//            Status = "Pending",
-//            BookingAdditions = bookingDto.AdditionalServices.Select(a => new BookingAddition
-//            {
-//                AdditionId = a.AdditionId,
-//                Quantity = a.Quantity,
-//                TotalPrice = a.TotalPrice
-//            }).ToList()
-//        };
+        try
+        {
+            // Calculate the total cost
+            var totalPrice = await _costCalculator.CalculateTotalCostAsync(request.TripId, request.NumberOfPeople, request.AdditionalServiceIds);
 
-//        try
-//        {
-//            await _bookingService.CreateBookingAsync(booking);
-//            return CreatedAtAction(nameof(GetBookingById), new { id = booking.Id }, booking);
-//        }
-//        catch (Exception ex)
-//        {
-//            _logger.LogError(ex, "An error occurred while booking the trip.");
-//            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred while trying to book the trip. Please try again later." });
-//        }
-//    }
+            // Return the total price as a response
+            var response = new TotalCostResponseDto { TotalPrice = totalPrice };
+            return Ok(response);
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogError(ex, "Error occurred while calculating total cost.");
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while calculating total cost.");
+            return StatusCode(500, "Internal server error");
+        }
+    }
 
-//    [HttpGet("{id}")]
-//    public async Task<IActionResult> GetBookingById(int id)
-//    {
-//        try
-//        {
-//            var booking = await _bookingService.GetBookingByIdAsync(id);
+    [HttpGet("available-boats")]
+    public async Task<IActionResult> GetAvailableBoats()
+    {
+        try
+        {
+            var boats = await _boatService.GetAvailableBoatsAsync();
+            return Ok(boats);
+        }
+        catch (Exception ex)
+        {
+            // تسجيل الاستثناء باستخدام Serilog
+            Log.Error(ex, "An error occurred while fetching available boats.");
+            return StatusCode(500, "Internal server error");
+        }
+    }
+    [HttpGet("history/{customerId}")]
+    public async Task<ActionResult<BookingHistoryResponse>> GetBookingHistory(int customerId)
+    {
+        var query = new GetBookingHistoryQuery(customerId);
+        var response = await _mediator.Send(query);
+        return Ok(response);
+    }
 
-//            if (booking == null)
-//            {
-//                _logger.LogWarning($"Booking with ID {id} not found.");
-//                return NotFound(new { Message = "The booking you are looking for does not exist." });
-//            }
+    [HttpPost("cancel")]
+    public async Task<IActionResult> CancelBooking([FromBody] CancelBookingCommand command)
+    {
+        var result = await _mediator.Send(command);
+        if (result.IsSuccess)
+        {
+            return Ok(result);
+        }
+        return BadRequest(result);
+    }
+    [HttpPost("book")]
+    public async Task<IActionResult> BookBoat([FromBody] BoatBookingRequest request)
+    {
+        if (request == null)
+        {
+            _logger.LogWarning("Booking request received with null data.");
+            return BadRequest("Invalid booking data.");
+        }
 
-//            return Ok(booking);
-//        }
-//        catch (Exception ex)
-//        {
-//            _logger.LogError(ex, $"An error occurred while retrieving booking with ID {id}.");
-//            return StatusCode(StatusCodes.Status500InternalServerError, new { Message = "An unexpected error occurred. Please try again later." });
-//        }
-//    }
+        try
+        {
+            var result = await _bookingService.BookBoatAsync(request);
 
-//    [HttpGet("customer/{userId}")]
-//    public async Task<IActionResult> GetCustomerIdByUserIdAsync(string userId)
-//    {
-//        var customerId = await _bookingService.GetCustomerIdByUserIdAsync(userId);
-//        if (customerId == null)
-//        {
-//            return NotFound(new { Message = "Customer ID not found." });
-//        }
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
 
-//        return Ok(new { CustomerId = customerId });
-//    }
-//}
+            return BadRequest(result);
+        }
+        catch (NotFoundException ex)
+        {
+            _logger.LogError(ex, "Error occurred while processing the booking request.");
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while processing the booking request.");
+            return StatusCode(500, "Internal server error");
+        }
+    }
+}

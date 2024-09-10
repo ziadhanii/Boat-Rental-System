@@ -1,84 +1,155 @@
-﻿//using BoatSystem.Core.Entities;
-//using BoatSystem.Core.Interfaces;
-//using BoatSystem.Infrastructure.Data;
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.Extensions.Logging;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
+﻿using BoatSystem.Core.Entities;
+using BoatSystem.Core.Interfaces;
+using BoatSystem.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-//namespace BoatSystem.Infrastructure.Repositories
-//{
-//    public class BookingRepository : IBookingRepository
-//    {
-//        private readonly ApplicationDbContext _context;
-//        private readonly ILogger<BookingRepository> _logger;
+namespace BoatSystem.Infrastructure.Repositories
+{
+    public class BookingRepository : IBookingRepository
+    {
+        private readonly ApplicationDbContext _context;
 
-//        public BookingRepository(ApplicationDbContext context, ILogger<BookingRepository> logger)
-//        {
-//            _context = context;
-//            _logger = logger;
-//        }
+        public BookingRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-//        public async Task<BoatBooking> GetByIdAsync(int id)
-//        {
-//            return await _context.BoatBookings
-//                .Include(b => b.BookingAdditions)
-//                .ThenInclude(ba => ba.Addition)
-//                .FirstOrDefaultAsync(b => b.Id == id);
-//        }
+        public async Task AddAsync(BoatBooking booking)
+        {
+            _context.BoatBookings.Add(booking);
+            await _context.SaveChangesAsync();
+        }
 
-//        public async Task CreateAsync(BoatBooking booking)
-//        {
-//            // تحقق من أن CustomerId موجود
-//            var customerExists = await _context.Customers
-//                .AnyAsync(c => c.Id == booking.CustomerId);
+        public async Task<BoatBooking> BookTripAsync(int customerId, int tripId, int participants, List<int> additionalServiceIds)
+        {
+            var trip = await _context.Trips.FindAsync(tripId);
+            if (trip == null) throw new InvalidOperationException("Trip not found");
 
-//            if (!customerExists)
-//            {
-//                throw new InvalidOperationException("Customer does not exist.");
-//            }
+            var booking = new BoatBooking
+            {
+                CustomerId = customerId,
+                TripId = tripId,
+                NumberOfPeople = participants,
+                BookingDate = DateTime.UtcNow,
+                DurationHours = trip.DurationHours, // Assigning based on trip details
+                TotalPrice = trip.PricePerPerson * participants, // Placeholder, update based on additional services
+                Status = "Booked"
+            };
 
-//            // تحقق من أن BoatId موجود
-//            var boatExists = await _context.Boats
-//                .AnyAsync(b => b.Id == booking.BoatId);
+            _context.BoatBookings.Add(booking);
+            await _context.SaveChangesAsync();
 
-//            if (!boatExists)
-//            {
-//                throw new InvalidOperationException("Boat does not exist.");
-//            }
+            // Handle additional services
+            if (additionalServiceIds.Any())
+            {
+                var additionalServices = await _context.BookingAdditions
+                    .Where(sa => additionalServiceIds.Contains(sa.Id))
+                    .ToListAsync();
+                foreach (var service in additionalServices)
+                {
+                    booking.BookingAdditions.Add(service);
+                }
 
-//            // تحقق من أن TripId موجود
-//            var tripExists = await _context.Trips
-//                .AnyAsync(t => t.Id == booking.TripId);
+                booking.TotalPrice += additionalServices.Sum(sa => sa.TotalPrice);
+                await _context.SaveChangesAsync();
+            }
 
-//            if (!tripExists)
-//            {
-//                throw new InvalidOperationException("Trip does not exist.");
-//            }
+            return booking;
+        }
 
-//            // إضافة الحجز إلى قاعدة البيانات
-//            _context.BoatBookings.Add(booking);
-//            await _context.SaveChangesAsync();
-//        }
+        public async Task<BoatBooking> BookBoatAsync(int customerId, int boatId, List<int> serviceIds, string purpose)
+        {
+            var booking = new BoatBooking
+            {
+                CustomerId = customerId,
+                BoatId = boatId,
+                TripId = null, // No trip for boat booking
+                NumberOfPeople = 0, // Assign if necessary
+                BookingDate = DateTime.UtcNow,
+                DurationHours = 0, // Set duration if applicable
+                TotalPrice = 0, // Placeholder, update based on services
+                Status = "Booked"
+            };
 
-//        public async Task<IEnumerable<BoatBooking>> GetBookingsByCustomerIdAsync(int customerId)
-//        {
-//            return await _context.BoatBookings
-//                .Where(b => b.CustomerId == customerId)
-//                .Include(b => b.BookingAdditions)
-//                .ThenInclude(ba => ba.Addition)
-//                .ToListAsync();
-//        }
+            _context.BoatBookings.Add(booking);
+            await _context.SaveChangesAsync();
 
-//        public async Task<IEnumerable<BoatBooking>> GetBookingsByTripIdAsync(int tripId)
-//        {
-//            return await _context.BoatBookings
-//                .Where(b => b.TripId == tripId)
-//                .Include(b => b.BookingAdditions)
-//                .ThenInclude(ba => ba.Addition)
-//                .ToListAsync();
-//        }
-//    }
-//}
+            // Handle additional services
+            if (serviceIds.Any())
+            {
+                var additionalServices = await _context.BookingAdditions
+                    .Where(sa => serviceIds.Contains(sa.Id))
+                    .ToListAsync();
+                foreach (var service in additionalServices)
+                {
+                    booking.BookingAdditions.Add(service);
+                }
+
+                booking.TotalPrice += additionalServices.Sum(sa => sa.TotalPrice);
+                await _context.SaveChangesAsync();
+            }
+
+            return booking;
+        }
+
+        public async Task<decimal> CalculateTotalCostAsync(int bookingId)
+        {
+            var booking = await _context.BoatBookings
+                .Include(b => b.BookingAdditions)
+                .FirstOrDefaultAsync(b => b.Id == bookingId);
+
+            if (booking == null)
+                throw new InvalidOperationException("Booking not found");
+
+            decimal totalCost = booking.TotalPrice;
+
+            if (booking.BookingAdditions != null)
+            {
+                totalCost += booking.BookingAdditions.Sum(ba => ba.TotalPrice);
+            }
+
+            return totalCost;
+        }
+
+        public async Task<bool> CancelBookingAsync(int bookingId)
+        {
+            var booking = await _context.BoatBookings.FindAsync(bookingId);
+
+            if (booking == null) return false;
+
+            booking.Status = "Canceled";
+            booking.CanceledAt = DateTime.UtcNow;
+            _context.BoatBookings.Update(booking);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<BoatBooking>> GetBookingHistoryAsync(int customerId)
+        {
+            return await _context.BoatBookings
+                .Where(b => b.CustomerId == customerId)
+                .ToListAsync();
+        }
+
+
+        public async Task<List<Booking>> GetBookingsByCustomerIdAsync(int customerId)
+        {
+            return await _context.Bookings
+                .Where(b => b.CustomerId == customerId)
+                .ToListAsync();
+        }
+
+        public async Task<Booking> GetByIdAsync(int bookingId)
+        {
+            return await _context.Bookings.FindAsync(bookingId);
+        }
+
+        public async Task UpdateAsync(Booking booking)
+        {
+            _context.Bookings.Update(booking);
+            await _context.SaveChangesAsync();
+        }
+    }
+}

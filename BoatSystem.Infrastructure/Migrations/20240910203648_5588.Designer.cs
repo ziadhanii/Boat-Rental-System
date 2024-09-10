@@ -4,6 +4,7 @@ using BoatSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoatSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240910203648_5588")]
+    partial class _5588
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,9 +149,6 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.Property<DateTime?>("CanceledAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CancellationDeadline")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -182,41 +182,6 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.HasIndex("TripId");
 
                     b.ToTable("BoatBookings");
-                });
-
-            modelBuilder.Entity("BoatSystem.Core.Entities.Booking", b =>
-                {
-                    b.Property<int>("BookingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("CanceledAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CancellationDeadline")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumberOfPeople")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("TripId");
-
-                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("BoatSystem.Core.Entities.BookingAddition", b =>
@@ -567,16 +532,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "545d6f34-9b7a-40ff-b845-a396f37142f2",
+                            ConcurrencyStamp = "f2b0d6e5-39a2-41ec-8389-4c5ea97f10b6",
                             Email = "ziadhani64@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZIADHANI64@GMAIL.COM",
                             NormalizedUserName = "ZIAD",
-                            PasswordHash = "AQAAAAIAAYagAAAAECMfc5ImDQu7UfYzw2x7sUDRWRSEnzC1CBdgEIn1rTlH66RAicU/DW3qovaE9FOnJw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO5krBL05A4QRZmEAY2JoSKs4KOObO5uc41Pqc4A8rqqFbDkjxc4T1W8cz8Zwr2Ivw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "71a39152-b531-4ca1-aff3-fad0dcb8a8b1",
+                            SecurityStamp = "55b2cbd7-4545-4b1d-a26e-21a7a2233241",
                             TwoFactorEnabled = false,
                             UserName = "Ziad"
                         },
@@ -584,16 +549,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c2dc3b37-725e-4ea3-af88-3200f6fc6adb",
+                            ConcurrencyStamp = "e48c3b0a-7191-46a5-a90d-31ae173cddf6",
                             Email = "Nour@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NOUR@GMAIL.COM",
                             NormalizedUserName = "NOUR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDW35++sc3S3oYJWAxsturJlFmR8Q3gr/vnbEyy4E5TbfyMKtUIasnegezrCO0k+hA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF8RUFm8Hq1/XxdVgi7lve9+CNar+Oo059n4HBgd0oIEm1lSmCG6PC3o3AIoAbRClA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5e8795c4-a152-4e2f-b971-11afdb060c49",
+                            SecurityStamp = "73b2bc31-6b88-454b-ba86-2f08275acae2",
                             TwoFactorEnabled = false,
                             UserName = "Nour"
                         },
@@ -601,16 +566,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "926a5a01-8f52-4b6c-88f7-78b87f478ba8",
+                            ConcurrencyStamp = "d835eb5a-2865-4602-b941-0034cfce848d",
                             Email = "Ahmed@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "AHMED@GMAIL.COM",
                             NormalizedUserName = "AHMED",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOg6GJG/RuIZ437+9fPyuKxk15WDL1ulxfm0JcN/TNfcJEiqogGmOJ0wrlH3ihnnTw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAwsWafCLBj9XOiGyrQWgN+yYuKcyuK27JXg82RCPXDuI9/QZjm0MBv9gzbFVc0a5A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3cb2be19-be25-4d6b-afa0-68e8c22817af",
+                            SecurityStamp = "ccf234b9-0e9b-4127-a021-3cc2e380af3c",
                             TwoFactorEnabled = false,
                             UserName = "Ahmed"
                         });
@@ -827,25 +792,6 @@ namespace BoatSystem.Infrastructure.Migrations
                         .HasForeignKey("TripId");
 
                     b.Navigation("Boat");
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Trip");
-                });
-
-            modelBuilder.Entity("BoatSystem.Core.Entities.Booking", b =>
-                {
-                    b.HasOne("BoatSystem.Core.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BoatSystem.Core.Entities.Trip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Customer");
 

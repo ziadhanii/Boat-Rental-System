@@ -63,5 +63,15 @@ namespace BoatSystem.Infrastructure.Repositories
         {
             return await _context.Trips.AnyAsync(t => t.Id == tripId);
         }
+
+        public async Task<Boat> GetBoatByTripIdAsync(int tripId)
+        {
+            // الحصول على القارب المرتبط بالرحلة
+            var trip = await _context.Trips
+                .Include(t => t.Boat)
+                .FirstOrDefaultAsync(t => t.Id == tripId);
+
+            return trip?.Boat;
+        }
     }
 }

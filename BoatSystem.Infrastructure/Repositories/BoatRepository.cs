@@ -4,6 +4,7 @@ using BoatSystem.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BoatSystem.Core.DTOs;
 
 namespace BoatSystem.Infrastructure.Repositories
 {
@@ -66,5 +67,22 @@ namespace BoatSystem.Infrastructure.Repositories
                 .Where(b => b.IsApproved == false)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<BoatDto>> GetAvailableBoatsAsync()
+        {
+            return await _context.Boats
+                .Where(b => b.IsApproved && b.Status == "Available") // أو أي شرط آخر لتحديد القوارب المتاحة
+                .Select(b => new BoatDto
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Description = b.Description,
+                    Capacity = b.Capacity,
+                    ReservationPrice = b.ReservationPrice,
+                    OwnerId = b.OwnerId
+                })
+                .ToListAsync();
+        }
+
+
     }
 }

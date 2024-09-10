@@ -10,7 +10,7 @@ namespace BoatSystem.Core.Interfaces
         Task<IEnumerable<BoatSummaryDto>> GetBoatsByNameAsync(string name);
         Task<IEnumerable<BoatApprovalDto>> GetUnapprovedBoatsAsync();
         Task<BoatDetailsDto> GetBoatByIdAsync(int id);
-        Task<int?> GetOwnerIdByUserIdAsync(string userId); // أضف هذه الواجهة
-
+        Task<int?> GetOwnerIdByUserIdAsync(string userId);
+        Task<IEnumerable<BoatDto>> GetAvailableBoatsAsync(); // إضافة هذا السطر
     }
 }

@@ -62,24 +62,13 @@ namespace BoatSystem.Infrastructure.Repositories
 
         public async Task<int?> GetCustomerIdByUserIdAsync(string userId)
         {
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                // يمكن أن تقرر ماذا تفعل إذا كان userId فارغاً أو null، مثل تسجيل رسالة خطأ أو إرجاع null.
-                return null;
-            }
+            var customer = await _context.Customers
+                .FirstOrDefaultAsync(c => c.UserId == userId); // افترض أن لديك خاصية UserId في Customer
 
-            // افترض أن لديك DbContext أو أي مصدر بيانات آخر
-            var customerId = await _context.Customers
-                .Where(c => c.UserId == userId)
-                .Select(c => c.Id)
-                .FirstOrDefaultAsync();
+            return customer?.Id;
+        }        // أضف هذه الطريقة
 
-            return customerId; // هذا يمكن أن يكون null إذا لم يتم العثور على العميل
-        }
-
-        // أضف هذه الطريقة
-
-        public async Task<Customer> GetOwnerByUserIdAsync(string userId)
+        public async Task<Customer> GetCustomerByUserIdAsync(string userId)
         {
             var Customer = await _context.Customers
                 .FirstOrDefaultAsync(o => o.UserId == userId);

@@ -23,6 +23,7 @@
         public DbSet<BoatBooking> BoatBookings { get; set; }
         public DbSet<BookingAddition> BookingAdditions { get; set; }
         public DbSet<Cancellation> Cancellations { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

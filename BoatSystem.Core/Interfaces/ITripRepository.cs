@@ -1,5 +1,4 @@
 ﻿using BoatSystem.Core.Entities;
-using BoatSystem.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,6 +13,6 @@ namespace BoatSystem.Core.Repositories
         Task<IEnumerable<Trip>> GetByOwnerIdAsync(int ownerId);
         Task<IEnumerable<Trip>> GetAvailableTripsAsync();
         Task<bool> ExistsAsync(int tripId);
-
+        Task<Boat> GetBoatByTripIdAsync(int tripId); // إضافة هذا التعريف
     }
 }

@@ -4,6 +4,7 @@ using BoatSystem.Application.Commands.AdditionalServiceCommand;
 using BoatSystem.Application.Commands.BoatCommands;
 using BoatSystem.Application.Commands.CityCommands.Add;
 using BoatSystem.Application.Commands.UserCommands;
+using BoatSystem.Application.Commands.Wallet;
 using BoatSystem.Application.Services;
 using BoatSystem.Core.Interfaces;
 using BoatSystem.Core.Models;
@@ -48,7 +49,6 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         c.SwaggerDoc(SwaggerDocsConstant.Customer, new OpenApiInfo { Title = "Customer API", Version = "v1" });
     });
 
-    // Register repositories and services
     services.AddScoped<ICityRepository, CityRepository>();
     services.AddScoped<ICountryRepository, CountryRepository>();
     services.AddScoped<IUserRepository, UserRepository>();
@@ -63,12 +63,18 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddScoped<ITripService, TripService>();
     services.AddScoped<IAdditionalService, AdditionalService>();
     services.AddScoped<IAdditionalServiceRepository, AdditionalServiceRepository>();
-    services.AddTransient<IAdditionalService, AdditionalService>();
-    services.AddTransient<IAdditionalServiceRepository, AdditionalServiceRepository>();
-    //services.AddScoped<IBookingService, BookingService>();
-    //services.AddScoped<IBookingRepository, BookingRepository>();
-    //services.AddScoped<IBookingService, BookingService>();
+    services.AddScoped<IBookingRepository, BookingRepository>();
     services.AddScoped<ICustomerService, CustomerService>();
+    services.AddScoped<IBookingAdditionRepository, BookingAdditionRepository>();
+    services.AddScoped<ICostCalculatorService, CostCalculatorService>();
+    services.AddScoped<IWalletRepository, WalletRepository>(); // Ensure this is included
+    builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+    builder.Services.AddScoped<ICancellationRepository, CancellationRepository>();
+    services.AddScoped<IBookingRepository, BookingRepository>();
+    services.AddScoped<ICancellationRepository, CancellationRepository>();
+    services.AddScoped<IBoatBookingRepository, BoatBookingRepository>();
+    services.AddScoped<IBookingService, BookingService>();
+
 
     services.AddAutoMapper(typeof(MappingProfile));
 
@@ -123,6 +129,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
            Assembly.GetAssembly(typeof(CreateAdditionalServiceCommand)),
            Assembly.GetAssembly(typeof(UpdateAdditionalServiceCommand)),
            Assembly.GetAssembly(typeof(DeleteAdditionalServiceCommand))
+           //Assembly.GetAssembly(typeof(BookTripCommand))
         );
     });
 

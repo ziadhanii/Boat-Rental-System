@@ -14,7 +14,7 @@ namespace BoatSystem.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<decimal> GetWalletBalanceAsync(int customerId)
+        public async Task<decimal> GetBalanceAsync(int customerId)
         {
             var customer = await _context.Customers
                 .FirstOrDefaultAsync(c => c.Id == customerId);

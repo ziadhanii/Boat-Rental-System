@@ -1,52 +1,69 @@
-﻿//using BoatSystem.Core.Entities;
-//using BoatSystem.Core.Interfaces;
-//using BoatSystem.Core.Repositories;
-//using System.Collections.Generic;
-//using System.Threading.Tasks;
+﻿using BoatSystem.Core.Entities;
+using BoatSystem.Core.Interfaces;
+using BoatSystem.Core.Models;
+using BoatSystem.Core.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace BoatSystem.Application.Services
-//{
-//    public class BookingService : IBookingService
-//    {
-//        private readonly IBookingRepository _bookingRepository;
-//        private readonly ICustomerRepository _customerRepository;
-//        private readonly ITripRepository _tripRepository; // Add this line
+namespace BoatSystem.Application.Services
+{
+    public interface IBookingService
+    {
+        Task<Result> BookBoatAsync(BoatBookingRequest request);
+    }
+    public class BookingService : IBookingService
+    {
+        private readonly IBoatBookingRepository _boatBookingRepository;
+        private readonly IBoatRepository _boatRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ITripRepository _tripRepository;
 
-//        public BookingService(IBookingRepository bookingRepository, ICustomerRepository customerRepository, ITripRepository tripRepository)
-//        {
-//            _bookingRepository = bookingRepository;
-//            _customerRepository = customerRepository;
-//            _tripRepository = tripRepository; // Add this line
-//        }
+        public BookingService(
+            IBoatBookingRepository boatBookingRepository,
+            IBoatRepository boatRepository,
+            ICustomerRepository customerRepository,
+            ITripRepository tripRepository)
+        {
+            _boatBookingRepository = boatBookingRepository;
+            _boatRepository = boatRepository;
+            _customerRepository = customerRepository;
+            _tripRepository = tripRepository;
+        }
 
-//        public async Task<BoatBooking> GetBookingByIdAsync(int id)
-//        {
-//            return await _bookingRepository.GetByIdAsync(id);
-//        }
+        public async Task<Result> BookBoatAsync(BoatBookingRequest request)
+        {
+            var boat = await _boatRepository.GetByIdAsync(request.BoatId);
+            var customer = await _customerRepository.GetByIdAsync(request.CustomerId);
+            var trip = request.TripId.HasValue ? await _tripRepository.GetByIdAsync(request.TripId.Value) : null;
 
-//        public async Task CreateBookingAsync(BoatBooking booking)
-//        {
-//            await _bookingRepository.CreateAsync(booking);
-//        }
+            if (boat == null)
+            {
+                return Result.Failure("Boat not found.");
+            }
 
-//        public async Task<IEnumerable<BoatBooking>> GetBookingsByCustomerIdAsync(int customerId)
-//        {
-//            return await _bookingRepository.GetBookingsByCustomerIdAsync(customerId);
-//        }
+            if (customer == null)
+            {
+                return Result.Failure("Customer not found.");
+            }
 
-//        public async Task<IEnumerable<BoatBooking>> GetBookingsByTripIdAsync(int tripId)
-//        {
-//            return await _bookingRepository.GetBookingsByTripIdAsync(tripId);
-//        }
-//        public async Task<int?> GetCustomerIdByUserIdAsync(string userId)
-//        {
-//            var customer = await _customerRepository.GetCutomerByUserIdAsync(userId);
-//            return customer?.Id;
-//        }
+            var booking = new BoatBooking
+            {
+                CustomerId = request.CustomerId,
+                BoatId = request.BoatId,
+                TripId = request.TripId,
+                BookingDate = DateTime.UtcNow,
+                DurationHours = request.DurationHours,
+                TotalPrice = request.TotalPrice,
+                NumberOfPeople = request.NumberOfPeople,
+                CancellationDeadline = request.CancellationDeadline
+            };
 
-//        public async Task<bool> IsTripExistsAsync(int tripId)
-//        {
-//            return await _tripRepository.ExistsAsync(tripId); // Make sure ExistsAsync is implemented in ITripRepository
-//        }
-//    }
-//}
+            await _boatBookingRepository.AddAsync(booking);
+
+            return Result.Success("Booking created successfully.");
+        }
+    }
+}

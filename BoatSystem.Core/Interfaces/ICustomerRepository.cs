@@ -16,5 +16,6 @@ namespace BoatSystem.Core.Interfaces
         Task<bool> AnyAsync(Expression<Func<Customer, bool>> predicate);
         Task<IEnumerable<Customer>> GetByUserIdAsync(string userId); // أعدت هذه الطريقة
         Task<int?> GetCustomerIdByUserIdAsync(string userId);
+
     }
 }

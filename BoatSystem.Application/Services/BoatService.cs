@@ -107,5 +107,12 @@ namespace BoatSystem.Application.Services
             var owner = await _ownerRepository.GetOwnerByUserIdAsync(userId);
             return owner?.Id;
         }
+
+
+
+        public async Task<IEnumerable<BoatDto>> GetAvailableBoatsAsync()
+        {
+            return await _boatRepository.GetAvailableBoatsAsync();
+        }
     }
 }
