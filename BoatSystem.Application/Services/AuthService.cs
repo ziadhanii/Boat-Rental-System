@@ -227,13 +227,17 @@ public class AuthService : IAuthService
 
     public async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
     {
+        // Get roles for the user
         var roleList = await _userManager.GetRolesAsync(user);
+
+        // Create claims with UserId
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email)
-        }.Union(roleList.Select(role => new Claim(ClaimTypes.Role, role)));
+        new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+        new Claim("UserId", user.Id) // Add UserId claim here
+    }.Union(roleList.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwt.Key));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

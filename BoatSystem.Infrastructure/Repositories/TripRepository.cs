@@ -1,8 +1,9 @@
 ﻿using BoatSystem.Core.Entities;
+using BoatSystem.Core.Repositories;
 using BoatSystem.Infrastructure.Data;
-using BoatSystem.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BoatSystem.Infrastructure.Repositories
@@ -16,41 +17,51 @@ namespace BoatSystem.Infrastructure.Repositories
             _context = context;
         }
 
+        public async Task<Trip> AddAsync(Trip trip)
+        {
+            _context.Trips.Add(trip);
+            await _context.SaveChangesAsync();
+            return trip;
+        }
+
+        public async Task<bool> UpdateAsync(Trip trip)
+        {
+            _context.Trips.Update(trip);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var trip = await _context.Trips.FindAsync(id);
+            if (trip == null)
+            {
+                return false;
+            }
+
+            _context.Trips.Remove(trip);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
         public async Task<Trip> GetByIdAsync(int id)
         {
             return await _context.Trips.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Trip>> GetAllAsync()
+        public async Task<IEnumerable<Trip>> GetByOwnerIdAsync(int ownerId)
         {
-            return await _context.Trips.ToListAsync();
+            return await _context.Trips.Where(t => t.OwnerId == ownerId).ToListAsync();
         }
 
-        public async Task AddAsync(Trip trip)
+        public async Task<IEnumerable<Trip>> GetAvailableTripsAsync()
         {
-            await _context.Trips.AddAsync(trip);
-            await _context.SaveChangesAsync();
+            return await _context.Trips
+                .Where(trip => trip.Status == "Available") // تأكد من أن حالة الرحلة هي "Available"
+                .ToListAsync();
         }
 
-        public async Task UpdateAsync(Trip trip)
+        public async Task<bool> ExistsAsync(int tripId)
         {
-            _context.Trips.Update(trip);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var trip = await GetByIdAsync(id);
-            if (trip != null)
-            {
-                _context.Trips.Remove(trip);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<IEnumerable<Trip>> GetTripsByBoatIdAsync(int boatId)
-        {
-            return await _context.Trips.Where(t => t.BoatId == boatId).ToListAsync();
+            return await _context.Trips.AnyAsync(t => t.Id == tripId);
         }
     }
 }

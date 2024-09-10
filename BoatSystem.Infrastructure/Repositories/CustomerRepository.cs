@@ -1,8 +1,11 @@
 ﻿using BoatSystem.Core.Entities;
-using BoatSystem.Infrastructure.Data;
 using BoatSystem.Core.Interfaces;
+using BoatSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace BoatSystem.Infrastructure.Repositories
 {
@@ -46,19 +49,56 @@ namespace BoatSystem.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<bool> AnyAsync(Expression<Func<Customer, bool>> predicate)
-        {
-            return await _context.Customers.AnyAsync(predicate);
-        }
+
         public async Task<IEnumerable<Customer>> GetCustomersByUserIdAsync(string userId)
         {
             return await _context.Customers.Where(c => c.UserId == userId).ToListAsync();
         }
-        public async Task<IEnumerable<Customer>> GetByUserIdAsync(string userId)
+
+        public async Task<bool> AnyAsync(Expression<Func<Customer, bool>> predicate)
         {
-            return await _context.Customers.Where(c => c.UserId == userId).ToListAsync();
+            return await _context.Customers.AnyAsync(predicate);
         }
 
+        public async Task<int?> GetCustomerIdByUserIdAsync(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                // يمكن أن تقرر ماذا تفعل إذا كان userId فارغاً أو null، مثل تسجيل رسالة خطأ أو إرجاع null.
+                return null;
+            }
 
+            // افترض أن لديك DbContext أو أي مصدر بيانات آخر
+            var customerId = await _context.Customers
+                .Where(c => c.UserId == userId)
+                .Select(c => c.Id)
+                .FirstOrDefaultAsync();
+
+            return customerId; // هذا يمكن أن يكون null إذا لم يتم العثور على العميل
+        }
+
+        // أضف هذه الطريقة
+
+        public async Task<Customer> GetOwnerByUserIdAsync(string userId)
+        {
+            var Customer = await _context.Customers
+                .FirstOrDefaultAsync(o => o.UserId == userId);
+
+            if (Customer == null)
+            {
+                Console.WriteLine($"Owner not found for UserId: {userId}");
+            }
+            else
+            {
+                Console.WriteLine($"Owner found: ID = {Customer.Id}");
+            }
+
+            return Customer;
+        }
+
+        public Task<IEnumerable<Customer>> GetByUserIdAsync(string userId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

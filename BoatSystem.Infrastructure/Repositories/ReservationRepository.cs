@@ -169,5 +169,12 @@ namespace BoatSystem.Infrastructure.Repositories
 
             return reservation;
         }
+
+        public async Task<IEnumerable<Reservation>> GetReservationsByBoatIdAsync(int boatId)
+        {
+            return await _context.Reservations
+                                 .Where(r => r.BoatId == boatId)
+                                 .ToListAsync();
+        }
     }
 }

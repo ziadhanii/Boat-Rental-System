@@ -19,7 +19,7 @@ namespace BoatSystem.Application.Services
             _ownerRepository = ownerRepository;
         }
 
-        public async Task<int> AddBoatAsync(BoatDto boatDto)
+        public async Task<BoatDetailsDto> AddBoatAsync(BoatDto boatDto)
         {
             var boat = new Boat
             {
@@ -34,7 +34,20 @@ namespace BoatSystem.Application.Services
             };
 
             await _boatRepository.AddAsync(boat);
-            return boat.Id; // تأكد من أن الـ ID يتم تعيينه بعد الإضافة
+
+            // التأكد من أن الـ ID تم تعيينه بعد إضافة القارب
+            return new BoatDetailsDto
+            {
+                Id = boat.Id,
+                Name = boat.Name,
+                Description = boat.Description,
+                Capacity = boat.Capacity,
+                ReservationPrice = boat.ReservationPrice,
+                OwnerId = boat.OwnerId,
+                Status = boat.Status,
+                CreatedAt = boat.CreatedAt,
+                UpdatedAt = boat.UpdatedAt
+            };
         }
 
         public async Task<IEnumerable<BoatSummaryDto>> GetBoatsByNameAsync(string name)
@@ -83,6 +96,16 @@ namespace BoatSystem.Application.Services
                 CreatedAt = boat.CreatedAt,
                 UpdatedAt = boat.UpdatedAt
             };
+        }
+
+        public async Task<IEnumerable<Boat>> GetBoatsByOwnerIdAsync(int ownerId)
+        {
+            return await _boatRepository.GetBoatsByOwnerIdAsync(ownerId);
+        }
+        public async Task<int?> GetOwnerIdByUserIdAsync(string userId)
+        {
+            var owner = await _ownerRepository.GetOwnerByUserIdAsync(userId);
+            return owner?.Id;
         }
     }
 }

@@ -14,5 +14,6 @@ namespace BoatSystem.Core.Interfaces
         Task<IEnumerable<Boat>> GetBoatsByOwnerIdAsync(int ownerId);
         Task<IEnumerable<Boat>> GetBoatsByNameAsync(string name);
         Task<IEnumerable<Boat>> GetUnapprovedBoatsAsync();
+
     }
 }

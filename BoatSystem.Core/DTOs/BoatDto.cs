@@ -12,6 +12,7 @@
 
     public class BoatDetailsDto
     {
+        public int Id { get; set; } // إضافة معرف القارب
         public string Name { get; set; }
         public string Description { get; set; }
         public int Capacity { get; set; }
@@ -42,4 +43,6 @@
         public int OwnerId { get; set; } // استخدم OwnerId هنا
         public string Status { get; set; }
     }
+
+
 }

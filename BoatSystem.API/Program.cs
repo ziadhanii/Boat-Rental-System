@@ -1,11 +1,13 @@
 ﻿using BoatRentalSystem.API.Controllers;
 using BoatRentalSystem.Core.Interfaces;
+using BoatSystem.Application.Commands.AdditionalServiceCommand;
 using BoatSystem.Application.Commands.BoatCommands;
 using BoatSystem.Application.Commands.CityCommands.Add;
 using BoatSystem.Application.Commands.UserCommands;
 using BoatSystem.Application.Services;
 using BoatSystem.Core.Interfaces;
 using BoatSystem.Core.Models;
+using BoatSystem.Core.Repositories;
 using BoatSystem.Infrastructure;
 using BoatSystem.Infrastructure.Data;
 using BoatSystem.Infrastructure.Repositories;
@@ -39,10 +41,11 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddControllers();
 
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen(options =>
+    services.AddSwaggerGen(c =>
     {
-        options.SwaggerDoc("user", new OpenApiInfo { Title = "User API", Version = "v1" });
-        options.SwaggerDoc("admin", new OpenApiInfo { Title = "Admin API", Version = "v1" });
+        c.SwaggerDoc(SwaggerDocsConstant.Admin, new OpenApiInfo { Title = "Admin API", Version = "v1" });
+        c.SwaggerDoc(SwaggerDocsConstant.Owner, new OpenApiInfo { Title = "Owner API", Version = "v1" });
+        c.SwaggerDoc(SwaggerDocsConstant.Customer, new OpenApiInfo { Title = "Customer API", Version = "v1" });
     });
 
     // Register repositories and services
@@ -57,6 +60,15 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddScoped<IOwnerRepository, OwnerRepository>();
     services.AddScoped<IAuthService, AuthService>();
     services.AddScoped<IBoatService, BoatService>();
+    services.AddScoped<ITripService, TripService>();
+    services.AddScoped<IAdditionalService, AdditionalService>();
+    services.AddScoped<IAdditionalServiceRepository, AdditionalServiceRepository>();
+    services.AddTransient<IAdditionalService, AdditionalService>();
+    services.AddTransient<IAdditionalServiceRepository, AdditionalServiceRepository>();
+    //services.AddScoped<IBookingService, BookingService>();
+    //services.AddScoped<IBookingRepository, BookingRepository>();
+    //services.AddScoped<IBookingService, BookingService>();
+    services.AddScoped<ICustomerService, CustomerService>();
 
     services.AddAutoMapper(typeof(MappingProfile));
 
@@ -96,6 +108,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
         };
     });
+    //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
     services.AddMediatR(c =>
     {
@@ -106,10 +119,13 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
            Assembly.GetAssembly(typeof(RejectUserRegistrationCommandHandler)),
            Assembly.GetAssembly(typeof(ApproveUserRegistrationCommandHandler)),
            Assembly.GetAssembly(typeof(RejectBoatRegistrationCommand)),
-           Assembly.GetAssembly(typeof(RejectBoatRegistrationCommandHandler))
-           //Assembly.GetAssembly(typeof(UpdateBoatCommandHandler))
+           Assembly.GetAssembly(typeof(RejectBoatRegistrationCommandHandler)),
+           Assembly.GetAssembly(typeof(CreateAdditionalServiceCommand)),
+           Assembly.GetAssembly(typeof(UpdateAdditionalServiceCommand)),
+           Assembly.GetAssembly(typeof(DeleteAdditionalServiceCommand))
         );
     });
+
 }
 
 void ConfigureSerilog(IHostBuilder hostBuilder)
@@ -139,8 +155,9 @@ void ConfigureApp(WebApplication app)
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {
-            c.SwaggerEndpoint($"/swagger/user/swagger.json", "User API");
-            c.SwaggerEndpoint($"/swagger/admin/swagger.json", "Admin API");
+            c.SwaggerEndpoint($"/swagger/{SwaggerDocsConstant.Admin}/swagger.json", "Admin API V1");
+            c.SwaggerEndpoint($"/swagger/{SwaggerDocsConstant.Owner}/swagger.json", "Owner API V1");
+            c.SwaggerEndpoint($"/swagger/{SwaggerDocsConstant.Customer}/swagger.json", "Customer API V1");
         });
     }
 

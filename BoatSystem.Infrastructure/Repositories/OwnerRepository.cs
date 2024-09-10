@@ -115,5 +115,25 @@ namespace BoatSystem.Infrastructure.Repositories
                 throw new Exception("An error occurred while fetching the owner by user ID.", ex);
             }
         }
+
+        public async Task<Owner> GetOwnerByUserIdAsync(string userId)
+        {
+            var owner = await _context.Owners
+                .FirstOrDefaultAsync(o => o.UserId == userId);
+
+            if (owner == null)
+            {
+                Console.WriteLine($"Owner not found for UserId: {userId}");
+            }
+            else
+            {
+                Console.WriteLine($"Owner found: ID = {owner.Id}");
+            }
+
+            return owner;
+        }
+
+
+
     }
 }

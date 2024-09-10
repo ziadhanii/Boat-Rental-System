@@ -9,6 +9,8 @@ namespace BoatSystem.Core.Models
     public static class SwaggerDocsConstant
     {
         public const string Admin = "admin";
-        public const string User = "user";
+        public const string Owner = "owner";
+        public const string Customer = "customer";
+
     }
 }

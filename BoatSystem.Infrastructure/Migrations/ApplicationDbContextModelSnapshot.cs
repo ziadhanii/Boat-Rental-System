@@ -22,6 +22,55 @@ namespace BoatSystem.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("BoatBooking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BoatId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("BookingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DurationHours")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TripId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BoatId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("BoatBookings");
+                });
+
             modelBuilder.Entity("BoatRentalSystem.Core.Entities.City", b =>
                 {
                     b.Property<int>("Id")
@@ -127,50 +176,6 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Boats");
-                });
-
-            modelBuilder.Entity("BoatSystem.Core.Entities.BoatBooking", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BoatId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("CanceledAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DurationHours")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BoatId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("BoatBookings");
                 });
 
             modelBuilder.Entity("BoatSystem.Core.Entities.BookingAddition", b =>
@@ -518,16 +523,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3a032853-f039-4c14-820e-8ad7da2f2880",
+                            ConcurrencyStamp = "29c62ca0-bbd6-4cfa-8f8f-3c160ad19b0f",
                             Email = "ziadhani64@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZIADHANI64@GMAIL.COM",
                             NormalizedUserName = "ZIAD",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP0s9ZQ6E7uTkAw4TcPl5eeNtbewmprOk9zFOUYR5EIc7Efi/2UPCuvMBZfH9lQv8g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHB3V6/X6uF1BzSiRTkxlnKQnR7xAZKs8cx6eBBJIotTBo+L9OCOA6KYfGyi41z/ZQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "837e4a5c-f826-46bd-b83a-13d49e000e6c",
+                            SecurityStamp = "240426e5-2e77-4bc5-9928-5e14d1d5f68a",
                             TwoFactorEnabled = false,
                             UserName = "Ziad"
                         },
@@ -535,16 +540,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aab60d39-a0de-40fe-9988-c7d07f0ef24e",
+                            ConcurrencyStamp = "810aefa1-123a-4126-a70f-9b4df52a9837",
                             Email = "Nour@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NOUR@GMAIL.COM",
                             NormalizedUserName = "NOUR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPSpOx4jrkqKJCk+Ul65CbE+ueiOLI/9fpOguZKBkKSCLCmNXg7fBYrIYadhCjrd0A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA6rNtgM8nA+ZP9/s9USh6z+hXjMR09aPWjdkYD9dVwjNTkrPSvuoPF/FHHdyaloAg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2707d1fc-d2a2-4216-ba22-44e1f3d64fdc",
+                            SecurityStamp = "31547064-61f7-455b-beb2-707480726026",
                             TwoFactorEnabled = false,
                             UserName = "Nour"
                         },
@@ -552,16 +557,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a85123a3-aa42-4063-9bec-cbd2f883a515",
+                            ConcurrencyStamp = "f1c44980-50f4-4123-9a4e-bcdf3987c7fb",
                             Email = "Ahmed@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "AHMED@GMAIL.COM",
                             NormalizedUserName = "AHMED",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKp/goZsze4Dbjo2ERnPXCWAUb3BbRVweTdPFSTWOcO6kNSTWPLcT5Wxj5RYB9mA3A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGNPO6UvJXeLrJuQ7LLHiNENOgnliPpUyIcOA7urZJ4rgNvbwLcY3Ec5U+dkOTKV9w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "170b5bcf-bac4-46a3-8ff3-ec8dfe64c57b",
+                            SecurityStamp = "d9887923-54ae-4485-bad2-11ebf5455352",
                             TwoFactorEnabled = false,
                             UserName = "Ahmed"
                         });
@@ -737,6 +742,33 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BoatBooking", b =>
+                {
+                    b.HasOne("BoatSystem.Core.Entities.Boat", "Boat")
+                        .WithMany("BoatBookings")
+                        .HasForeignKey("BoatId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BoatSystem.Core.Entities.Customer", "Customer")
+                        .WithMany("BoatBookings")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BoatSystem.Core.Entities.Trip", "Trip")
+                        .WithMany()
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Boat");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Trip");
+                });
+
             modelBuilder.Entity("BoatSystem.Core.Entities.Addition", b =>
                 {
                     b.HasOne("BoatSystem.Core.Entities.Owner", "Owner")
@@ -759,25 +791,6 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("BoatSystem.Core.Entities.BoatBooking", b =>
-                {
-                    b.HasOne("BoatSystem.Core.Entities.Boat", "Boat")
-                        .WithMany("BoatBookings")
-                        .HasForeignKey("BoatId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BoatSystem.Core.Entities.Customer", "Customer")
-                        .WithMany("BoatBookings")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Boat");
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("BoatSystem.Core.Entities.BookingAddition", b =>
                 {
                     b.HasOne("BoatSystem.Core.Entities.Addition", "Addition")
@@ -786,7 +799,7 @@ namespace BoatSystem.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BoatSystem.Core.Entities.BoatBooking", "BoatBooking")
+                    b.HasOne("BoatBooking", "BoatBooking")
                         .WithMany("BookingAdditions")
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -799,7 +812,7 @@ namespace BoatSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("BoatSystem.Core.Entities.Cancellation", b =>
                 {
-                    b.HasOne("BoatSystem.Core.Entities.BoatBooking", "BoatBooking")
+                    b.HasOne("BoatBooking", "BoatBooking")
                         .WithMany()
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -893,7 +906,7 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.HasOne("BoatSystem.Core.Entities.Boat", "Boat")
                         .WithMany("Trips")
                         .HasForeignKey("BoatId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BoatSystem.Core.Entities.Owner", "Owner")
@@ -958,6 +971,11 @@ namespace BoatSystem.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BoatBooking", b =>
+                {
+                    b.Navigation("BookingAdditions");
+                });
+
             modelBuilder.Entity("BoatSystem.Core.Entities.Addition", b =>
                 {
                     b.Navigation("BookingAdditions");
@@ -972,11 +990,6 @@ namespace BoatSystem.Infrastructure.Migrations
                     b.Navigation("Reservations");
 
                     b.Navigation("Trips");
-                });
-
-            modelBuilder.Entity("BoatSystem.Core.Entities.BoatBooking", b =>
-                {
-                    b.Navigation("BookingAdditions");
                 });
 
             modelBuilder.Entity("BoatSystem.Core.Entities.Customer", b =>

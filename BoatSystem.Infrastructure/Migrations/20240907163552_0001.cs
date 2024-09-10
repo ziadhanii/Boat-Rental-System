@@ -493,7 +493,7 @@ namespace BoatSystem.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "7bdb9275-8cd4-4d86-bea6-bbdb5125e28a", null, "Admin", "ADMIN" },
+                    { "7bdb9275-8cd4-4d86-bea6-bbdb5125e28a", null, "w", "ADMIN" },
                     { "936c5f84-e463-49c2-bb6a-93347bbd5103", null, "Owner", "OWNER" },
                     { "f117b498-2e53-4686-86dc-d3c13072850e", null, "Customer", "CUSTOMER" }
                 });

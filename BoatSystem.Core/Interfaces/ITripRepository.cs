@@ -1,16 +1,19 @@
 ﻿using BoatSystem.Core.Entities;
+using BoatSystem.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BoatSystem.Core.Interfaces
+namespace BoatSystem.Core.Repositories
 {
     public interface ITripRepository
     {
+        Task<Trip> AddAsync(Trip trip);
+        Task<bool> UpdateAsync(Trip trip);
+        Task<bool> DeleteAsync(int id);
         Task<Trip> GetByIdAsync(int id);
-        Task<IEnumerable<Trip>> GetAllAsync();
-        Task AddAsync(Trip trip);
-        Task UpdateAsync(Trip trip);
-        Task DeleteAsync(int id);
-        Task<IEnumerable<Trip>> GetTripsByBoatIdAsync(int boatId);
+        Task<IEnumerable<Trip>> GetByOwnerIdAsync(int ownerId);
+        Task<IEnumerable<Trip>> GetAvailableTripsAsync();
+        Task<bool> ExistsAsync(int tripId);
+
     }
 }

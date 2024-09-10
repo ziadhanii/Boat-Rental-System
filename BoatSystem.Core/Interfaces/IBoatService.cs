@@ -6,9 +6,11 @@ namespace BoatSystem.Core.Interfaces
 {
     public interface IBoatService
     {
-        Task<int> AddBoatAsync(BoatDto boatDto);
+        Task<BoatDetailsDto> AddBoatAsync(BoatDto boatDto);
         Task<IEnumerable<BoatSummaryDto>> GetBoatsByNameAsync(string name);
         Task<IEnumerable<BoatApprovalDto>> GetUnapprovedBoatsAsync();
         Task<BoatDetailsDto> GetBoatByIdAsync(int id);
+        Task<int?> GetOwnerIdByUserIdAsync(string userId); // أضف هذه الواجهة
+
     }
 }

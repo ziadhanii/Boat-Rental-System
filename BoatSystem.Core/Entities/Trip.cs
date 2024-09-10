@@ -17,7 +17,7 @@ namespace BoatSystem.Core.Entities
         public decimal PricePerPerson { get; set; }
         public int MaxPeople { get; set; }
         public DateTime CancellationDeadline { get; set; }
-        public string Status { get; set; } // e.g., Active, Canceled, Completed
+        public string Status { get; set; } 
         public DateTime StartedAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;

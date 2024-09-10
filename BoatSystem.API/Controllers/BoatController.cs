@@ -1,77 +1,163 @@
 ﻿using BoatSystem.Application.Commands.BoatCommands;
-using BoatSystem.Application.DTOs;
 using BoatSystem.Core.DTOs;
+using BoatSystem.Core.Entities;
 using BoatSystem.Core.Interfaces;
+using BoatSystem.Core.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
-namespace BoatSystem.API.Controllers
+[ApiController]
+[Route("api/[controller]")]
+//[Authorize(Roles = "Owner")]
+[ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+public class BoatController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BoatController : ControllerBase
+    private readonly IBoatService _boatService;
+    private readonly IMediator _mediator;
+    private readonly ILogger<BoatController> _logger;
+
+    public BoatController(IBoatService boatService, IMediator mediator, ILogger<BoatController> logger)
     {
-        private readonly IBoatService _boatService;
-        private readonly IMediator _mediator;
+        _boatService = boatService;
+        _mediator = mediator;
+        _logger = logger;
+    }
 
-        public BoatController(IBoatService boatService, IMediator mediator)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetBoatById(int id)
+    {
+        var boat = await _boatService.GetBoatByIdAsync(id);
+        if (boat == null)
         {
-            _boatService = boatService;
-            _mediator = mediator;
+            return NotFound();
         }
 
-        [HttpPost("add")]
-        public async Task<IActionResult> AddBoat([FromBody] BoatDto boatDto)
+        return Ok(boat);
+    }
+
+    [HttpPost("add")]
+    public async Task<IActionResult> AddBoat([FromBody] BoatDto boatDto)
+    {
+        if (boatDto == null)
         {
-            if (boatDto == null)
+            _logger.LogWarning("AddBoat called with null boatDto.");
+            return BadRequest("Invalid boat data.");
+        }
+
+        var userId = User.FindFirst("UserId")?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("User ID not found in token.");
+            return Unauthorized("User ID not found in token.");
+        }
+
+        var ownerId = await _boatService.GetOwnerIdByUserIdAsync(userId);
+        if (!ownerId.HasValue)
+        {
+            _logger.LogWarning($"Owner not found for userId: {userId}");
+            return Unauthorized("Owner not found.");
+        }
+
+        boatDto.OwnerId = ownerId.Value;
+
+        try
+        {
+            var boatDetails = await _boatService.AddBoatAsync(boatDto);
+            if (boatDetails != null)
             {
-                return BadRequest("Invalid boat data.");
+                return CreatedAtAction(nameof(GetBoatById), new { id = boatDetails.Id }, boatDetails);
             }
 
-            int boatId = await _boatService.AddBoatAsync(boatDto);
+            _logger.LogError("Error occurred while adding the boat.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the boat.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception occurred while adding the boat.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the boat.");
+        }
+    }
 
-            if (boatId > 0)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateBoat(int id, [FromBody] UpdateBoatCommand command)
+    {
+        if (id != command.Id)
+        {
+            return BadRequest("ID mismatch. The provided ID does not match the ID in the command.");
+        }
+
+        var userId = User.FindFirst("UserId")?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("User ID not found in token.");
+            return Unauthorized("User ID not found in token.");
+        }
+
+        var ownerId = await _boatService.GetOwnerIdByUserIdAsync(userId);
+        if (!ownerId.HasValue)
+        {
+            _logger.LogWarning($"Owner not found for userId: {userId}");
+            return Unauthorized("Owner not found.");
+        }
+
+        // Ensure the boat belongs to the owner
+        var boat = await _boatService.GetBoatByIdAsync(id);
+        if (boat == null || boat.OwnerId != ownerId.Value)
+        {
+            _logger.LogWarning($"Boat with ID {id} does not belong to owner with ID {ownerId.Value}.");
+            return Unauthorized("You are not authorized to update this boat.");
+        }
+
+        var result = await _mediator.Send(command);
+        if (result)
+        {
+            return NoContent();
+        }
+
+        return NotFound();
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBoat(int id)
+    {
+        // 1. التحقق من هوية المستخدم
+        var userId = User.FindFirst("UserId")?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            _logger.LogWarning("User ID not found in token.");
+            return Unauthorized("User ID not found in token.");
+        }
+
+        var ownerId = await _boatService.GetOwnerIdByUserIdAsync(userId);
+        if (!ownerId.HasValue)
+        {
+            _logger.LogWarning($"Owner not found for userId: {userId}");
+            return Unauthorized("Owner not found.");
+        }
+
+        // 2. التحقق من حالة المركبة
+        var boat = await _boatService.GetBoatByIdAsync(id);
+        if (boat == null)
+        {
+            return NotFound("Boat not found.");
+        }
+
+        if (boat.OwnerId != ownerId.Value)
+        {
+            _logger.LogWarning($"Boat with ID {id} does not belong to owner with ID {ownerId.Value}.");
+            return Unauthorized("You are not authorized to delete this boat.");
+        }
+
+        // 3. إجراء الحذف
+        try
+        {
+            var command = new DeleteBoatCommand
             {
-                return CreatedAtAction(nameof(GetBoatById), new { id = boatId }, boatDto);
-            }
-
-            return StatusCode(500, "An error occurred while adding the boat.");
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetBoatById(int id)
-        {
-            var boat = await _boatService.GetBoatByIdAsync(id);
-            if (boat == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(boat);
-        }
-
-        [HttpGet("searchByName")]
-        public async Task<IActionResult> GetBoatsByName([FromQuery] string name)
-        {
-            var boats = await _boatService.GetBoatsByNameAsync(name);
-            return Ok(boats);
-        }
-
-        [HttpGet("unapproved")]
-        public async Task<IActionResult> GetUnapprovedBoats()
-        {
-            var boats = await _boatService.GetUnapprovedBoatsAsync();
-            return Ok(boats);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBoat(int id, [FromBody] UpdateBoatCommand command)
-        {
-            if (id != command.Id)
-            {
-                return BadRequest("ID mismatch. The provided ID does not match the ID in the command.");
-            }
+                Id = id,
+                OwnerId = ownerId.Value
+            };
 
             var result = await _mediator.Send(command);
             if (result)
@@ -79,7 +165,12 @@ namespace BoatSystem.API.Controllers
                 return NoContent();
             }
 
-            return NotFound(); // إرجاع NotFound إذا لم يتم العثور على القارب
+            return StatusCode(StatusCodes.Status400BadRequest, "Cannot delete the boat due to existing reservations or owner mismatch.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Exception occurred while deleting the boat.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the boat.");
         }
     }
 }
