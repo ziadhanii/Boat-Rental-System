@@ -17,21 +17,21 @@ public class AdditionalServiceRepository : IAdditionalServiceRepository
     public async Task<List<Addition>> GetAllAsync()
     {
         return await _context.Additions
-            .Include(a => a.Owner) // تضمين بيانات المالك
+            .Include(a => a.Owner) 
             .ToListAsync();
     }
 
     public async Task<Addition> GetByIdAsync(int id)
     {
         return await _context.Additions
-            .Include(a => a.Owner) // تضمين بيانات المالك
+            .Include(a => a.Owner) 
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task<IEnumerable<Addition>> GetByOwnerIdAsync(int ownerId)
     {
         return await _context.Additions
-            .Include(a => a.Owner) // تضمين بيانات المالك
+            .Include(a => a.Owner) 
             .Where(a => a.OwnerId == ownerId)
             .ToListAsync();
     }

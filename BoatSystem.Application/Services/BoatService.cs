@@ -35,7 +35,6 @@ namespace BoatSystem.Application.Services
 
             await _boatRepository.AddAsync(boat);
 
-            // التأكد من أن الـ ID تم تعيينه بعد إضافة القارب
             return new BoatDetailsDto
             {
                 Id = boat.Id,
@@ -61,7 +60,7 @@ namespace BoatSystem.Application.Services
                 ReservationPrice = boat.ReservationPrice,
                 OwnerId = boat.OwnerId,
                 Status = boat.Status
-            }).ToList(); // تأكد من تحويله إلى قائمة
+            }).ToList(); 
         }
 
         public async Task<IEnumerable<BoatApprovalDto>> GetUnapprovedBoatsAsync()
@@ -76,7 +75,7 @@ namespace BoatSystem.Application.Services
                 ReservationPrice = boat.ReservationPrice,
                 OwnerId = boat.OwnerId,
                 Status = boat.Status
-            }).ToList(); // تأكد من تحويله إلى قائمة
+            }).ToList(); 
         }
 
         public async Task<BoatDetailsDto> GetBoatByIdAsync(int id)

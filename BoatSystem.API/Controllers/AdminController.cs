@@ -1,22 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BoatSystem.Application.Commands.BoatCommands;
 using BoatSystem.Application.Commands.ReservationCommands;
 using BoatSystem.Application.Commands.UserCommands;
-using BoatSystem.Application.Commands.BoatCommands;
+using BoatSystem.Application.DTOs;
 using BoatSystem.Application.Queries;
 using MediatR;
-using BoatSystem.Application.DTOs;
-using BoatSystem.Core.Models;
 using Microsoft.AspNetCore.Authorization;
-using BoatSystem.Application;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using BoatSystem.Application;
+using BoatSystem.Core.Models;
 
 namespace BoatSystem.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Admin)]
-    //[Authorize(Roles = "Admin")] // Ensure only users with the "Admin" role can access this controller
+    //[Authorize(Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -116,7 +118,7 @@ namespace BoatSystem.API.Controllers
             try
             {
                 await _mediator.Send(new CancelReservationCommand { ReservationId = id });
-                return NoContent(); // No content is returned as the action was successful
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -152,15 +154,15 @@ namespace BoatSystem.API.Controllers
                     ReservationId = id,
                     ReservationDto = dto
                 });
-                return NoContent(); // 204 No Content
+                return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return NotFound(new { message = ex.Message }); // 404 Not Found
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An unexpected error occurred.", details = ex.Message }); // 500 Internal Server Error
+                return StatusCode(500, new { message = "An unexpected error occurred.", details = ex.Message });
             }
         }
 

@@ -27,9 +27,9 @@ namespace BoatSystem.Application.Queries
             return reservations.Select(r => new ReservationDto
             {
                 Id = r.Id,
-                CustomerName = r.Customer.FullName, // Assuming Customer has a FullName property
-                TripName = r.Trip.Name, // Assuming Trip has a Name property
-                BoatName = r.Boat.Name, // Assuming Boat has a Name property
+                CustomerName = r.Customer.FullName,
+                TripName = r.Trip.Name, 
+                BoatName = r.Boat.Name, 
                 NumPeople = r.NumPeople,
                 TotalPrice = r.TotalPrice,
                 ReservationDate = r.ReservationDate,

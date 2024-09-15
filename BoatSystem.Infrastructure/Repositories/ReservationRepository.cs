@@ -63,7 +63,7 @@ namespace BoatSystem.Infrastructure.Repositories
                     throw new InvalidOperationException($"The boat's capacity is exceeded. Available capacity is {boat.Capacity - totalPeopleReserved}.");
                 }
 
-                reservation.CanceledAt = null; // Ensure canceledAt is null initially
+                reservation.CanceledAt = null; 
                 await _context.Reservations.AddAsync(reservation);
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();

@@ -96,9 +96,9 @@ public class AuthService : IAuthService
             Email = user.Email,
             UserName = user.UserName,
             ExpiresOn = jwtSecurityToken.ValidTo,
-            IsAuthenticated = true, // Set to true as the user is authenticated now
+            IsAuthenticated = true, 
             Roles = new List<string> { "Customer" },
-            Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), // Provide the token
+            Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken), 
             Message = "Registration successful."
         };
     }
@@ -147,10 +147,10 @@ public class AuthService : IAuthService
         {
             Email = user.Email,
             UserName = user.UserName,
-            IsAuthenticated = true, // User is not authenticated yet
+            IsAuthenticated = true,
             Roles = new List<string> { "Owner" },
-            Token = null, // No token is provided at registration
-            ExpiresOn = null, // No expiration time as no token is provided
+            Token = null, 
+            ExpiresOn = null, 
             Message = "Owner registration successful."
         };
     }
@@ -189,10 +189,10 @@ public class AuthService : IAuthService
         {
             Email = user.Email,
             UserName = user.UserName,
-            IsAuthenticated = true, // User is not authenticated yet
+            IsAuthenticated = true, 
             Roles = new List<string> { "Admin" },
-            Token = null, // No token is provided at registration
-            ExpiresOn = null, // No expiration time as no token is provided
+            Token = null, 
+            ExpiresOn = null, 
             Message = "Admin registration successful."
         };
     }
@@ -227,16 +227,14 @@ public class AuthService : IAuthService
 
     public async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
     {
-        // Get roles for the user
         var roleList = await _userManager.GetRolesAsync(user);
 
-        // Create claims with UserId
         var claims = new[]
         {
         new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim(JwtRegisteredClaimNames.Email, user.Email),
-        new Claim("UserId", user.Id) // Add UserId claim here
+        new Claim("UserId", user.Id) 
     }.Union(roleList.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwt.Key));
@@ -259,7 +257,6 @@ public class AuthService : IAuthService
     }
     public async Task<List<Owner>> GetUnverifiedOwnersAsync()
     {
-        // Assuming you have a method to filter unverified owners
         var owners = await _ownerRepository.GetAllAsync();
         return owners.Where(o => !o.IsVerified).ToList();
     }

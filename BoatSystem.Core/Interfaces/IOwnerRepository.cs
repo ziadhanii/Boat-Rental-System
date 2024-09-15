@@ -7,8 +7,8 @@ public interface IOwnerRepository
     Task AddAsync(Owner owner);
     Task UpdateAsync(Owner owner);
     Task DeleteAsync(int id);
-    Task<IEnumerable<Owner>> GetOwnersByUserIdAsync(string userId); // Adjusted type to string
+    Task<IEnumerable<Owner>> GetOwnersByUserIdAsync(string userId); 
     Task<Owner> GetByUserIdAsync(string userId);
-    Task<Owner> GetOwnerByUserIdAsync(string userId); // Add this method
+    Task<Owner> GetOwnerByUserIdAsync(string userId); 
 
 }

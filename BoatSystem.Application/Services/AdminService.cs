@@ -35,14 +35,12 @@ namespace BoatSystem.Application.Services
             var user = await _userRepository.GetByIdAsync(userId);
             if (user != null)
             {
-                // Delete related records in the Customers table
                 var relatedCustomers = await _customerRepository.GetByUserIdAsync(userId);
                 foreach (var customer in relatedCustomers)
                 {
                     await _customerRepository.DeleteAsync(customer.Id);
                 }
 
-                // Delete the user
                 await _userRepository.DeleteAsync(userId);
             }
         }
@@ -69,11 +67,8 @@ namespace BoatSystem.Application.Services
         public async Task<IEnumerable<Reservation>> MonitorReservationsAsync()
         {
             var reservations = await _reservationRepository.GetAllAsync();
-            // قم بتنفيذ المنطق لمراقبة وإدارة الحجوزات
-            // على سبيل المثال، يمكنك تسجيل الحجوزات في سجل
             foreach (var reservation in reservations)
             {
-                // سجل أو قم بعملية معينة لكل حجز
                 Console.WriteLine($"Reservation ID: {reservation.Id}, Customer: {reservation.CustomerId}, Boat: {reservation.BoatId}, Status: {reservation.Status}");
             }
             return reservations;

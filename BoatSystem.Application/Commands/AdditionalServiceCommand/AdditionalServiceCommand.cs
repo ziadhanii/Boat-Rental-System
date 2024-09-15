@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BoatSystem.Application.Services;
+﻿using BoatSystem.Application.Services;
 using BoatSystem.Core.DTOs;
 using BoatSystem.Core.Entities;
 using BoatSystem.Core.Interfaces;
@@ -80,7 +79,7 @@ namespace BoatSystem.Application.Commands.AdditionalServiceCommand
             var addition = new Addition
             {
                 Id = request.UpdateAdditionalServiceDto.Id,
-                OwnerId = request.UpdateAdditionalServiceDto.OwnerId, // تأكد من تضمين OwnerId هنا
+                OwnerId = request.UpdateAdditionalServiceDto.OwnerId, 
                 Name = request.UpdateAdditionalServiceDto.Name,
                 Description = request.UpdateAdditionalServiceDto.Description,
                 Price = request.UpdateAdditionalServiceDto.Price,

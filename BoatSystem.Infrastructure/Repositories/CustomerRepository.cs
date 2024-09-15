@@ -63,10 +63,10 @@ namespace BoatSystem.Infrastructure.Repositories
         public async Task<int?> GetCustomerIdByUserIdAsync(string userId)
         {
             var customer = await _context.Customers
-                .FirstOrDefaultAsync(c => c.UserId == userId); // افترض أن لديك خاصية UserId في Customer
+                .FirstOrDefaultAsync(c => c.UserId == userId); 
 
             return customer?.Id;
-        }        // أضف هذه الطريقة
+        }       
 
         public async Task<Customer> GetCustomerByUserIdAsync(string userId)
         {

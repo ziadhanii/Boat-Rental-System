@@ -16,7 +16,7 @@ namespace BoatSystem.Application.DTOs
         public int? NumPeople { get; set; }
         public decimal? TotalPrice { get; set; }
         public DateTime ReservationDate { get; set; }
-        public string Status { get; set; } // Change from ReservationStatus to string
+        public string Status { get; set; } 
         public DateTime? CanceledAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

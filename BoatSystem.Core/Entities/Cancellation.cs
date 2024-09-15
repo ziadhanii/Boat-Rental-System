@@ -17,7 +17,6 @@ namespace BoatSystem.Core.Entities
         public decimal RefundAmount { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation properties
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
 

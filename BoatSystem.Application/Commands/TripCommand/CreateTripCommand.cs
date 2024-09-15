@@ -65,8 +65,8 @@ namespace BoatSystem.Application.Trips.Commands
                 OwnerId = request.OwnerId,
                 Status = "Active",
                 StartedAt = request.StartedAt,
-                CreatedAt = DateTime.UtcNow,  // Setting CreatedAt to current time
-                UpdatedAt = DateTime.UtcNow   // Setting UpdatedAt to current time
+                CreatedAt = DateTime.UtcNow, 
+                UpdatedAt = DateTime.UtcNow   
             };
 
             var addedTrip = await _tripRepository.AddAsync(trip);
@@ -82,8 +82,8 @@ namespace BoatSystem.Application.Trips.Commands
                 CancellationDeadline = addedTrip.CancellationDeadline,
                 Status = addedTrip.Status,
                 StartedAt = addedTrip.StartedAt,
-                CreatedAt = addedTrip.CreatedAt,  // Include CreatedAt
-                UpdatedAt = addedTrip.UpdatedAt   // Include UpdatedAt
+                CreatedAt = addedTrip.CreatedAt,  
+                UpdatedAt = addedTrip.UpdatedAt   
             };
         }
     }
@@ -114,7 +114,7 @@ namespace BoatSystem.Application.Trips.Commands
             existingTrip.CancellationDeadline = request.CancellationDeadline;
             existingTrip.Status = request.Status;
             existingTrip.StartedAt = request.StartedAt;
-            existingTrip.UpdatedAt = DateTime.UtcNow;  // Update UpdatedAt to current time
+            existingTrip.UpdatedAt = DateTime.UtcNow; 
 
             return await _tripRepository.UpdateAsync(existingTrip);
         }

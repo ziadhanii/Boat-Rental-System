@@ -4,6 +4,7 @@ using BoatSystem.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -17,7 +18,7 @@ public class AuthController : ControllerBase
         _authService = authService;
         _logger = logger;
     }
-
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] TokenRequestModel model)
     {

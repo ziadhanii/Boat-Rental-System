@@ -25,7 +25,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception (consider using a logging framework like Serilog)
                 throw new Exception("An error occurred while fetching the owner.", ex);
             }
         }
@@ -38,7 +37,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception
                 throw new Exception("An error occurred while fetching all owners.", ex);
             }
         }
@@ -52,7 +50,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception
                 throw new Exception("An error occurred while adding the owner.", ex);
             }
         }
@@ -66,7 +63,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception
                 throw new Exception("An error occurred while updating the owner.", ex);
             }
         }
@@ -84,7 +80,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception
                 throw new Exception("An error occurred while deleting the owner.", ex);
             }
         }
@@ -97,7 +92,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception
                 throw new Exception("An error occurred while fetching owners by user ID.", ex);
             }
         }
@@ -111,7 +105,6 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (Exception ex)
             {
-                // Log the exception
                 throw new Exception("An error occurred while fetching the owner by user ID.", ex);
             }
         }

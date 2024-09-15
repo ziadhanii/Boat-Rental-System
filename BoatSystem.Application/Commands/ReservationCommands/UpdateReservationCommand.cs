@@ -53,7 +53,7 @@ namespace BoatSystem.Application.Commands.ReservationCommands
 
             await _reservationRepository.UpdateAsync(reservation);
 
-            return true; // Return true to indicate success
+            return true; 
         }
     }
 }

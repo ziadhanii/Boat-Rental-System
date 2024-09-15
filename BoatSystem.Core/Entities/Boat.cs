@@ -12,11 +12,10 @@ namespace BoatSystem.Core.Entities
         public bool IsApproved { get; set; }
 
         public decimal ReservationPrice { get; set; }
-        public string Status { get; set; } // e.g., Pending, Approved, Rejected
+        public string Status { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation property
         [ForeignKey("OwnerId")]
         public Owner Owner { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; } = new HashSet<Reservation>();

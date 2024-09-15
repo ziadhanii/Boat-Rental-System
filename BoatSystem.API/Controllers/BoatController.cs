@@ -24,7 +24,7 @@ public class BoatController : ControllerBase
         _mediator = mediator;
         _logger = logger;
     }
-
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBoatById(int id)
     {
@@ -33,10 +33,11 @@ public class BoatController : ControllerBase
         {
             return NotFound();
         }
-
         return Ok(boat);
     }
 
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+    //[Authorize(Roles = "owner")]
     [HttpPost("add")]
     public async Task<IActionResult> AddBoat([FromBody] BoatDto boatDto)
     {
@@ -79,7 +80,8 @@ public class BoatController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the boat.");
         }
     }
-
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+    //[Authorize(Roles = "owner")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateBoat(int id, [FromBody] UpdateBoatCommand command)
     {
@@ -102,7 +104,6 @@ public class BoatController : ControllerBase
             return Unauthorized("Owner not found.");
         }
 
-        // Ensure the boat belongs to the owner
         var boat = await _boatService.GetBoatByIdAsync(id);
         if (boat == null || boat.OwnerId != ownerId.Value)
         {
@@ -118,11 +119,11 @@ public class BoatController : ControllerBase
 
         return NotFound();
     }
-
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+    //[Authorize(Roles = "owner")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBoat(int id)
     {
-        // 1. التحقق من هوية المستخدم
         var userId = User.FindFirst("UserId")?.Value;
         if (string.IsNullOrEmpty(userId))
         {
@@ -137,7 +138,6 @@ public class BoatController : ControllerBase
             return Unauthorized("Owner not found.");
         }
 
-        // 2. التحقق من حالة المركبة
         var boat = await _boatService.GetBoatByIdAsync(id);
         if (boat == null)
         {
@@ -150,7 +150,6 @@ public class BoatController : ControllerBase
             return Unauthorized("You are not authorized to delete this boat.");
         }
 
-        // 3. إجراء الحذف
         try
         {
             var command = new DeleteBoatCommand

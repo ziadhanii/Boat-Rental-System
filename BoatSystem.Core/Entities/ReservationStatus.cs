@@ -6,7 +6,7 @@ namespace BoatSystem.Core.Entities
     {
         Pending = 1,
         Confirmed = 2,
-        Cancelled = 3  // تأكد من أن هذا موجود
+        Cancelled = 3  
     }
 
 }

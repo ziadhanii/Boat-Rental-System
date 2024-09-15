@@ -24,8 +24,8 @@ namespace BoatSystem.Application.Commands.BoatCommands
             var boat = await _boatRepository.GetByIdAsync(request.BoatId);
             if (boat != null)
             {
-                boat.IsApproved = false; // تأكد من أن الخاصية موجودة في الكائن Boat
-                await _boatRepository.UpdateAsync(boat); // تأكد من تنفيذ عملية التحديث بشكل صحيح
+                boat.IsApproved = false; 
+                await _boatRepository.UpdateAsync(boat); 
             }
             return Unit.Value;
         }

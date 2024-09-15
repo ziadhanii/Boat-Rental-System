@@ -6,16 +6,15 @@ namespace BoatSystem.Core.Entities
     public class Owner
     {
         public int Id { get; set; }
-        public string UserId { get; set; } // هذا هو العمود الذي سيرتبط بـ AspNetUsers
+        public string UserId { get; set; } 
         public bool IsVerified { get; set; }
         public string BusinessName { get; set; }
         public string Address { get; set; }
         public decimal WalletBalance { get; set; } = 0.00M;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public bool IsApproved { get; set; } // إضافة خاصية IsApproved
+        public bool IsApproved { get; set; } 
 
-        // Navigation property
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<Boat> Boats { get; set; } = new HashSet<Boat>();

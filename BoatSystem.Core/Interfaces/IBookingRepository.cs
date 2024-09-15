@@ -14,6 +14,7 @@ namespace BoatSystem.Core.Interfaces
         Task<bool> CancelBookingAsync(int bookingId);
         Task<IEnumerable<BoatBooking>> GetBookingHistoryAsync(int customerId);
         Task<List<Booking>> GetBookingsByCustomerIdAsync(int customerId);
-        Task UpdateAsync(Booking booking); // إضافة هذه الطريقة
+        Task UpdateAsync(Booking booking); 
+
     }
 }

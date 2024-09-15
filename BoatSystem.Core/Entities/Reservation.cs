@@ -18,10 +18,10 @@ namespace BoatSystem.Core.Entities
         public int BoatId { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Number of people must be greater than 0.")]
-        public int? NumPeople { get; set; } // Nullable
+        public int? NumPeople { get; set; } 
 
         [Range(0, double.MaxValue, ErrorMessage = "Total price must be greater than or equal to 0.")]
-        public decimal? TotalPrice { get; set; } // Nullable
+        public decimal? TotalPrice { get; set; }
 
         [Required]
         public DateTime ReservationDate { get; set; }
@@ -29,7 +29,7 @@ namespace BoatSystem.Core.Entities
         [Required]
         public ReservationStatus Status { get; set; }
 
-        public DateTime? CanceledAt { get; set; } // Nullable
+        public DateTime? CanceledAt { get; set; } 
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -37,7 +37,6 @@ namespace BoatSystem.Core.Entities
         [Required]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation properties
         [ForeignKey(nameof(CustomerId))]
         public virtual Customer Customer { get; set; }
 

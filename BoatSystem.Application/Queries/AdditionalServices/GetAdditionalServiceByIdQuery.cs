@@ -1,6 +1,6 @@
 ﻿using BoatSystem.Application.Services;
 using BoatSystem.Core.DTOs;
-using BoatSystem.Core.Interfaces; // Ensure you have the correct namespace for IAdditionalService
+using BoatSystem.Core.Interfaces; 
 using BoatSystem.Core.Repositories;
 using MediatR;
 using System.Collections.Generic;
@@ -10,25 +10,20 @@ using System.Threading.Tasks;
 
 namespace BoatSystem.Application.Queries.AdditionalServices
 {
-    // طلب لاسترجاع خدمة إضافية بناءً على معرف الخدمة
     public class GetAdditionalServiceByIdQuery : IRequest<AdditionalServiceDto>
     {
         public int Id { get; set; }
     }
 
-    // طلب لاسترجاع جميع الخدمات الإضافية بناءً على OwnerId
     public class GetAllAdditionalServicesQuery : IRequest<IEnumerable<AdditionalServiceDto>>
     {
-        // No need for OwnerId here if you're fetching all services
     }
 
-    // طلب لاسترجاع جميع الخدمات الإضافية بناءً على OwnerId
     public class GetAdditionalServicesByOwnerIdQuery : IRequest<IEnumerable<AdditionalServiceDto>>
     {
         public int OwnerId { get; set; }
     }
 
-    // معالج طلب لاسترجاع خدمة إضافية بناءً على معرف الخدمة
     public class GetAdditionalServiceByIdQueryHandler : IRequestHandler<GetAdditionalServiceByIdQuery, AdditionalServiceDto>
     {
         private readonly IAdditionalService _additionalService;
@@ -44,7 +39,7 @@ namespace BoatSystem.Application.Queries.AdditionalServices
 
             if (addition == null)
             {
-                return null; // Handle case where service is not found
+                return null; 
             }
 
             return new AdditionalServiceDto
@@ -60,7 +55,6 @@ namespace BoatSystem.Application.Queries.AdditionalServices
         }
     }
 
-    // معالج طلب لاسترجاع جميع الخدمات الإضافية بناءً على OwnerId
     public class GetAllAdditionalServicesHandler : IRequestHandler<GetAllAdditionalServicesQuery, IEnumerable<AdditionalServiceDto>>
     {
         private readonly IAdditionalServiceRepository _additionalServiceRepository;
@@ -72,7 +66,7 @@ namespace BoatSystem.Application.Queries.AdditionalServices
 
         public async Task<IEnumerable<AdditionalServiceDto>> Handle(GetAllAdditionalServicesQuery request, CancellationToken cancellationToken)
         {
-            var additions = await _additionalServiceRepository.GetAllAsync(); // استخدام GetAllAsync بدلاً من GetByOwnerIdAsync
+            var additions = await _additionalServiceRepository.GetAllAsync(); 
 
             return additions.Select(a => new AdditionalServiceDto
             {
@@ -87,7 +81,6 @@ namespace BoatSystem.Application.Queries.AdditionalServices
         }
     }
 
-    // معالج طلب لاسترجاع جميع الخدمات الإضافية بناءً على OwnerId
     public class GetAdditionalServicesByOwnerIdQueryHandler : IRequestHandler<GetAdditionalServicesByOwnerIdQuery, IEnumerable<AdditionalServiceDto>>
     {
         private readonly IAdditionalService _additionalService;

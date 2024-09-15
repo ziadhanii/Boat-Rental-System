@@ -4,6 +4,7 @@ using BoatSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoatSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911003349_85")]
+    partial class _85
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,27 +104,27 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = 1,
                             Capacity = 10,
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(2727),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(2373),
                             Description = "A beautiful sailboat.",
                             IsApproved = true,
                             Name = "Sea Breeze",
                             OwnerId = 1,
                             ReservationPrice = 150.00m,
                             Status = "Available",
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(2728)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(2374)
                         },
                         new
                         {
                             Id = 2,
                             Capacity = 8,
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(2731),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(2378),
                             Description = "A powerful motorboat.",
                             IsApproved = true,
                             Name = "Ocean Explorer",
                             OwnerId = 1,
                             ReservationPrice = 200.00m,
                             Status = "Available",
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(2731)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(2378)
                         });
                 });
 
@@ -320,10 +323,10 @@ namespace BoatSystem.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(2132),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(1143),
                             FirstName = "John",
                             LastName = "Doe",
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(2133),
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(1143),
                             UserId = "3",
                             WalletBalance = 500.00m
                         });
@@ -375,10 +378,10 @@ namespace BoatSystem.Infrastructure.Migrations
                             Id = 1,
                             Address = "123 Marina Bay",
                             BusinessName = "Nautical Ventures",
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 445, DateTimeKind.Utc).AddTicks(9119),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 962, DateTimeKind.Utc).AddTicks(5673),
                             IsApproved = false,
                             IsVerified = false,
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 445, DateTimeKind.Utc).AddTicks(9124),
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 962, DateTimeKind.Utc).AddTicks(5674),
                             UserId = "3",
                             WalletBalance = 1000.00m
                         });
@@ -438,23 +441,23 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = 1,
                             BoatId = 1,
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5023),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(6535),
                             CustomerId = 2,
-                            ReservationDate = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5022),
+                            ReservationDate = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(6534),
                             Status = "Confirmed",
                             TripId = 1,
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5024)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(6535)
                         },
                         new
                         {
                             Id = 2,
                             BoatId = 2,
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5026),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(6539),
                             CustomerId = 2,
-                            ReservationDate = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5025),
+                            ReservationDate = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(6539),
                             Status = "Pending",
                             TripId = 2,
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5026)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(6540)
                         });
                 });
 
@@ -537,26 +540,26 @@ namespace BoatSystem.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            BookingDate = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5694),
+                            BookingDate = new DateTime(2024, 9, 11, 0, 33, 48, 966, DateTimeKind.Utc).AddTicks(9327),
                             CancellationDeadline = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5695),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 966, DateTimeKind.Utc).AddTicks(9329),
                             CustomerId = 2,
                             NumberOfPeople = 0,
                             Status = 1,
                             TripId = 1,
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5695)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 966, DateTimeKind.Utc).AddTicks(9330)
                         },
                         new
                         {
                             Id = 2,
-                            BookingDate = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5698),
+                            BookingDate = new DateTime(2024, 9, 11, 0, 33, 48, 966, DateTimeKind.Utc).AddTicks(9331),
                             CancellationDeadline = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5698),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 966, DateTimeKind.Utc).AddTicks(9332),
                             CustomerId = 2,
                             NumberOfPeople = 0,
                             Status = 0,
                             TripId = 2,
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(5699)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 966, DateTimeKind.Utc).AddTicks(9332)
                         });
                 });
 
@@ -632,16 +635,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "96b520fb-e747-486b-89c7-6f143f089956",
+                            ConcurrencyStamp = "4d5b6965-9c13-4e09-bdc7-d210eb5954ea",
                             Email = "ziadhani64@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ZIADHANI64@GMAIL.COM",
                             NormalizedUserName = "ZIAD",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPoZxyyPtiNb8vYGax/i9KdEI1yMmRQZn7JVYUxASjRrMJfau6WKr8OhhCkfDX8yOg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELB6Ll/RQRSnMeie/u9h+QogBqa0R9ep1v2D95lFh5f0ezslssePEoRMGeOHmVcuPQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eeab729d-de09-45ec-a9dd-ec49b86b9473",
+                            SecurityStamp = "282d2bee-4804-4fbd-90ce-8fa6e8cea634",
                             TwoFactorEnabled = false,
                             UserName = "Ziad"
                         },
@@ -649,16 +652,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6d4d5ee8-cc46-4c0d-a833-57c15de0182c",
+                            ConcurrencyStamp = "8a75514e-6079-4812-8a69-8e7e7a781f9d",
                             Email = "Nour@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "NOUR@GMAIL.COM",
                             NormalizedUserName = "NOUR",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKugnIcoc1zPjPKMy5KSvcESLmHgc+RzKJgKOUEXakYqkylGsX3DZEPdEIbalYhrbg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHSaPAzhvW5WRkjXwzu7FBXpRBqGElIRy8KJAUUaUOUDbb433GACTeLpW2rHNeAVyg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f0aa6965-df4d-4c48-82e0-bf67c73bf1e4",
+                            SecurityStamp = "5a597172-c416-41f8-a916-1b9dfee41ed1",
                             TwoFactorEnabled = false,
                             UserName = "Nour"
                         },
@@ -666,16 +669,16 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be43679e-8e42-4452-9b80-216dc0f073e8",
+                            ConcurrencyStamp = "4884e99a-101f-4385-b4c8-45cfdfb1e4b3",
                             Email = "Ahmed@gmail.com",
                             EmailConfirmed = true,
                             IsApproved = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "AHMED@GMAIL.COM",
                             NormalizedUserName = "AHMED",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDCyd4rqhxq6aTSm41oWyDrod/D6ra/wZMD2ZDOJkirhKoOntkaIvr2Qnq3oOm9ziw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEyJ+iWnfuG0VnmV93npYNGUUaH5eCH2qo7X9QQRHVj7346npYGRAi5Dkd8D5xQ1zg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a6f294b6-2d46-4612-843e-a26487d61e86",
+                            SecurityStamp = "326437a7-7b0f-4c0e-a191-50320a6964e0",
                             TwoFactorEnabled = false,
                             UserName = "Ahmed"
                         });
@@ -908,33 +911,33 @@ namespace BoatSystem.Infrastructure.Migrations
                         {
                             Id = 1,
                             BoatId = 1,
-                            CancellationDeadline = new DateTime(2024, 9, 14, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3623),
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3630),
+                            CancellationDeadline = new DateTime(2024, 9, 14, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3982),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3992),
                             Description = "A relaxing trip to tropical islands.",
                             DurationHours = 4,
                             MaxPeople = 10,
                             Name = "Tropical Getaway",
                             OwnerId = 1,
                             PricePerPerson = 200.00m,
-                            StartedAt = new DateTime(2024, 9, 12, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3629),
+                            StartedAt = new DateTime(2024, 9, 12, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3992),
                             Status = "Available",
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3630)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3993)
                         },
                         new
                         {
                             Id = 2,
                             BoatId = 2,
-                            CancellationDeadline = new DateTime(2024, 9, 16, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3634),
-                            CreatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3635),
+                            CancellationDeadline = new DateTime(2024, 9, 16, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3996),
+                            CreatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3997),
                             Description = "An exciting cruise with lots of adventures.",
                             DurationHours = 6,
                             MaxPeople = 8,
                             Name = "Adventure Cruise",
                             OwnerId = 1,
                             PricePerPerson = 300.00m,
-                            StartedAt = new DateTime(2024, 9, 13, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3634),
+                            StartedAt = new DateTime(2024, 9, 13, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3997),
                             Status = "Available",
-                            UpdatedAt = new DateTime(2024, 9, 11, 0, 40, 11, 446, DateTimeKind.Utc).AddTicks(3635)
+                            UpdatedAt = new DateTime(2024, 9, 11, 0, 33, 48, 965, DateTimeKind.Utc).AddTicks(3998)
                         });
                 });
 

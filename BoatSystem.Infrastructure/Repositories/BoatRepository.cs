@@ -70,7 +70,7 @@ namespace BoatSystem.Infrastructure.Repositories
         public async Task<IEnumerable<BoatDto>> GetAvailableBoatsAsync()
         {
             return await _context.Boats
-                .Where(b => b.IsApproved && b.Status == "Available") // أو أي شرط آخر لتحديد القوارب المتاحة
+                .Where(b => b.IsApproved && b.Status == "Available") 
                 .Select(b => new BoatDto
                 {
                     Id = b.Id,

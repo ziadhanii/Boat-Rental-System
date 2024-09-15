@@ -10,7 +10,7 @@ namespace BoatSystem.Core.Interfaces
     public interface IBoatBookingRepository
     {
         Task<BoatBooking> GetByIdAsync(int bookingId);
-        Task UpdateAsync(BoatBooking boatBooking); // إضافة هذه الطريقة
+        Task UpdateAsync(BoatBooking boatBooking);
         Task AddAsync(BoatBooking boatBooking);
 
     }

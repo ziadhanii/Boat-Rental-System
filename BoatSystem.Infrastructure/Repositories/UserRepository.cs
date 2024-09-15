@@ -19,14 +19,14 @@ namespace BoatSystem.Infrastructure.Repositories
         public async Task<ApplicationUser> GetByIdAsync(string id)
         {
             return await _context.Users
-                .AsNoTracking() // Prevents tracking to improve performance when reading
+                .AsNoTracking() 
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
         {
             return await _context.Users
-                .AsNoTracking() // Prevents tracking to improve performance when reading
+                .AsNoTracking()
                 .ToListAsync();
         }
 
@@ -64,12 +64,10 @@ namespace BoatSystem.Infrastructure.Repositories
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                // Handle concurrency issues
                 throw new ApplicationException("A concurrency error occurred while saving changes.", ex);
             }
             catch (DbUpdateException ex)
             {
-                // Handle database update issues
                 throw new ApplicationException("An error occurred while saving changes to the database.", ex);
             }
         }

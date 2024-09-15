@@ -91,12 +91,12 @@ namespace BoatSystem.Application.Commands
 
             if (booking != null)
             {
-                booking.CanceledAt = request.CancellationDate; // تعيين تاريخ الإلغاء
+                booking.CanceledAt = request.CancellationDate; 
                 await _bookingRepository.UpdateAsync(booking);
             }
             else if (boatBooking != null)
             {
-                boatBooking.CanceledAt = request.CancellationDate; // تعيين تاريخ الإلغاء
+                boatBooking.CanceledAt = request.CancellationDate; 
                 await _boatBookingRepository.UpdateAsync(boatBooking);
             }
 
@@ -105,14 +105,12 @@ namespace BoatSystem.Application.Commands
 
         private decimal CalculateRefundAmount(Booking booking, DateTime cancellationDate)
         {
-            // أضف هنا منطق حساب مبلغ الاسترداد بناءً على الحجز
-            return 50.00m; // قيمة افتراضية
+            return 50.00m;  
         }
 
         private decimal CalculateRefundAmount(BoatBooking boatBooking, DateTime cancellationDate)
         {
-            // أضف هنا منطق حساب مبلغ الاسترداد بناءً على الحجز البحري
-            return 50.00m; // قيمة افتراضية
+            return 50.00m; 
         }
     }
 

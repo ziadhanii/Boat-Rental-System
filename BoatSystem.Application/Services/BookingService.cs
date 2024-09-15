@@ -2,68 +2,81 @@
 using BoatSystem.Core.Interfaces;
 using BoatSystem.Core.Models;
 using BoatSystem.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BoatSystem.Application.Services
+public interface IBookingService
 {
-    public interface IBookingService
+    Task<Result> BookBoatAsync(BoatBookingRequest request);
+    Task<Result> BookTripAsync(TripBookingRequest request);
+} 
+
+public class BookingService : IBookingService
+{
+    private readonly IBoatBookingRepository _boatBookingRepository;
+    private readonly IBoatRepository _boatRepository;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly ITripRepository _tripRepository;
+
+    public BookingService(
+        IBoatBookingRepository boatBookingRepository,
+        IBoatRepository boatRepository,
+        ICustomerRepository customerRepository,
+        ITripRepository tripRepository)
     {
-        Task<Result> BookBoatAsync(BoatBookingRequest request);
+        _boatBookingRepository = boatBookingRepository;
+        _boatRepository = boatRepository;
+        _customerRepository = customerRepository;
+        _tripRepository = tripRepository;
     }
-    public class BookingService : IBookingService
+
+    public async Task<Result> BookBoatAsync(BoatBookingRequest request)
     {
-        private readonly IBoatBookingRepository _boatBookingRepository;
-        private readonly IBoatRepository _boatRepository;
-        private readonly ICustomerRepository _customerRepository;
-        private readonly ITripRepository _tripRepository;
+        if (request == null) throw new ArgumentNullException(nameof(request));
 
-        public BookingService(
-            IBoatBookingRepository boatBookingRepository,
-            IBoatRepository boatRepository,
-            ICustomerRepository customerRepository,
-            ITripRepository tripRepository)
+        var boat = await _boatRepository.GetByIdAsync(request.BoatId);
+        if (boat == null) return Result.Failure("Boat not found.");
+
+        var customer = await _customerRepository.GetByIdAsync(request.CustomerId);
+        if (customer == null) return Result.Failure("Customer not found.");
+
+        var boatBooking = new BoatBooking
         {
-            _boatBookingRepository = boatBookingRepository;
-            _boatRepository = boatRepository;
-            _customerRepository = customerRepository;
-            _tripRepository = tripRepository;
-        }
+            CustomerId = request.CustomerId,
+            BoatId = request.BoatId,
+            BookingDate = DateTime.UtcNow,
+            DurationHours = request.DurationHours,
+            TotalPrice = request.TotalPrice,
+            NumberOfPeople = request.NumberOfPeople,
+            CancellationDeadline = request.CancellationDeadline,
+            Status = "Confirmed",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
 
-        public async Task<Result> BookBoatAsync(BoatBookingRequest request)
+        await _boatBookingRepository.AddAsync(boatBooking);
+        return Result.Success("Boat booking created successfully.");
+    }
+
+    public async Task<Result> BookTripAsync(TripBookingRequest request)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+
+        var trip = await _tripRepository.GetByIdAsync(request.TripId);
+        if (trip == null) return Result.Failure("Trip not found.");
+
+        var customer = await _customerRepository.GetByIdAsync(request.CustomerId);
+        if (customer == null) return Result.Failure("Customer not found.");
+
+        var boatBooking = new BoatBooking
         {
-            var boat = await _boatRepository.GetByIdAsync(request.BoatId);
-            var customer = await _customerRepository.GetByIdAsync(request.CustomerId);
-            var trip = request.TripId.HasValue ? await _tripRepository.GetByIdAsync(request.TripId.Value) : null;
+            CustomerId = request.CustomerId,
+            TripId = request.TripId,
+            BookingDate = DateTime.UtcNow,
+            NumberOfPeople = request.NumberOfPeople,
+            CancellationDeadline = request.CancellationDeadline,
+            CanceledAt = null
+        };
 
-            if (boat == null)
-            {
-                return Result.Failure("Boat not found.");
-            }
-
-            if (customer == null)
-            {
-                return Result.Failure("Customer not found.");
-            }
-
-            var booking = new BoatBooking
-            {
-                CustomerId = request.CustomerId,
-                BoatId = request.BoatId,
-                TripId = request.TripId,
-                BookingDate = DateTime.UtcNow,
-                DurationHours = request.DurationHours,
-                TotalPrice = request.TotalPrice,
-                NumberOfPeople = request.NumberOfPeople,
-                CancellationDeadline = request.CancellationDeadline
-            };
-
-            await _boatBookingRepository.AddAsync(booking);
-
-            return Result.Success("Booking created successfully.");
-        }
+        await _boatBookingRepository.AddAsync(boatBooking);
+        return Result.Success("Trip booking created successfully.");
     }
 }

@@ -15,7 +15,6 @@ namespace BoatSystem.Core.Entities
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        // Navigation properties
         [ForeignKey("ReservationId")]
         public Reservation Reservation { get; set; }
 

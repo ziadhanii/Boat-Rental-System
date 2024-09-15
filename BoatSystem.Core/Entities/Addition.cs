@@ -16,7 +16,6 @@ namespace BoatSystem.Core.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation properties
         public virtual Owner Owner { get; set; }
         public virtual ICollection<ReservationAddition> ReservationAdditions { get; set; } = new HashSet<ReservationAddition>();
         public virtual ICollection<BookingAddition> BookingAdditions { get; set; } = new HashSet<BookingAddition>();

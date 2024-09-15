@@ -1,5 +1,4 @@
-﻿// Core/Interfaces/ICancellationRepository.cs
-using BoatSystem.Core.Entities;
+﻿using BoatSystem.Core.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

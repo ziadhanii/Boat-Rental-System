@@ -10,7 +10,7 @@ namespace BoatSystem.Core.Interfaces
     public interface IBookingAdditionRepository
     {
         Task<List<BookingAddition>> GetByIdsAsync(List<int> additionIds);
-        Task AddAsync(BookingAddition bookingAddition); // Add this method
-        Task AddRangeAsync(IEnumerable<BookingAddition> bookingAdditions); // Optional if you also need AddRangeAsync
+        Task AddAsync(BookingAddition bookingAddition); 
+        Task AddRangeAsync(IEnumerable<BookingAddition> bookingAdditions); 
     }
 }

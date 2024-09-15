@@ -18,12 +18,12 @@ namespace BoatSystem.Core.DTOs
     }
     public class CustomerWalletDto
     {
-        public int CustomerId { get; set; } // استخدم CustomerId بدلاً من OwnerId
+        public int CustomerId { get; set; } 
         public decimal Balance { get; set; }
     }
     public class UpdateCustomerWalletDto
     {
-        public int CustomerId { get; set; } // استخدم CustomerId بدلاً من OwnerId
+        public int CustomerId { get; set; } 
         public decimal Amount { get; set; }
     }
 }

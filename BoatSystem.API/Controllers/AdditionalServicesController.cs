@@ -1,5 +1,6 @@
 ﻿using BoatSystem.Application.Commands.AdditionalServiceCommand;
 using BoatSystem.Application.Queries.AdditionalServices;
+using BoatSystem.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +15,16 @@ public class AdditionalServicesController : ControllerBase
     {
         _mediator = mediator;
     }
-
-    // POST: api/AdditionalServices
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+    //[Authorize(Roles = "owner")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateAdditionalServiceCommand command)
     {
         var result = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
-
-    // PUT: api/AdditionalServices/{id}
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+    //[Authorize(Roles = "owner")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateAdditionalServiceCommand command)
     {
@@ -40,10 +41,10 @@ public class AdditionalServicesController : ControllerBase
 
         return NoContent();
     }
-
-    // DELETE: api/AdditionalServices/{id}
+    [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
+    //[Authorize(Roles = "owner")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id) // تعديل هنا
+    public async Task<IActionResult> Delete(int id)
     {
         var command = new DeleteAdditionalServiceCommand { Id = id };
         var result = await _mediator.Send(command);
@@ -54,10 +55,9 @@ public class AdditionalServicesController : ControllerBase
 
         return NoContent();
     }
-
-    // GET: api/AdditionalServices/{id}
+    [AllowAnonymous]
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id) // تعديل هنا
+    public async Task<IActionResult> GetById(int id)
     {
         var query = new GetAdditionalServiceByIdQuery { Id = id };
         var result = await _mediator.Send(query);
@@ -68,8 +68,7 @@ public class AdditionalServicesController : ControllerBase
 
         return Ok(result);
     }
-
-    // GET: api/AdditionalServices
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -77,6 +76,4 @@ public class AdditionalServicesController : ControllerBase
         var result = await _mediator.Send(query);
         return Ok(result);
     }
-
-
 }

@@ -7,8 +7,6 @@ using BoatSystem.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -25,7 +23,6 @@ public class TripController : ControllerBase
         _tripService = tripService;
     }
 
-    // Customer endpoints
     [HttpGet("available")]
     [AllowAnonymous]
     [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Customer)]
@@ -73,7 +70,6 @@ public class TripController : ControllerBase
         }
     }
 
-    // Owner endpoints
     [HttpPost("add")]
     [Authorize(Roles = "Owner")]
     [ApiExplorerSettings(GroupName = SwaggerDocsConstant.Owner)]
@@ -255,12 +251,9 @@ public class TripController : ControllerBase
 
         if (!trips.Any())
         {
-            return NotFound(new { Message = "No trips found for the specified owner." });
+            return NotFound(new { Message = "No trips found for this owner." });
         }
 
         return Ok(trips);
     }
-
-
-
 }

@@ -8,7 +8,7 @@ namespace BoatSystem.Application.Commands.BoatCommands
     public class DeleteBoatCommand : IRequest<bool>
     {
         public int Id { get; set; }
-        public int OwnerId { get; set; } // Ensure this is an int
+        public int OwnerId { get; set; } 
     }
 
     public class DeleteBoatCommandHandler : IRequestHandler<DeleteBoatCommand, bool>
@@ -27,18 +27,18 @@ namespace BoatSystem.Application.Commands.BoatCommands
             var boat = await _boatRepository.GetByIdAsync(request.Id);
             if (boat == null)
             {
-                return false; // Boat not found
+                return false;
             }
 
             var owner = await _ownerRepository.GetByIdAsync(request.OwnerId);
             if (owner == null)
             {
-                return false; // Owner not found
+                return false;
             }
 
             if (boat.OwnerId != request.OwnerId)
             {
-                return false; // Owner mismatch
+                return false; 
             }
 
             await _boatRepository.DeleteAsync(request.Id);

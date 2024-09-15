@@ -34,15 +34,14 @@ namespace BoatSystem.Infrastructure.Repositories
                 TripId = tripId,
                 NumberOfPeople = participants,
                 BookingDate = DateTime.UtcNow,
-                DurationHours = trip.DurationHours, // Assigning based on trip details
-                TotalPrice = trip.PricePerPerson * participants, // Placeholder, update based on additional services
+                DurationHours = trip.DurationHours, 
+                TotalPrice = trip.PricePerPerson * participants,
                 Status = "Booked"
             };
 
             _context.BoatBookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            // Handle additional services
             if (additionalServiceIds.Any())
             {
                 var additionalServices = await _context.BookingAdditions
@@ -66,18 +65,17 @@ namespace BoatSystem.Infrastructure.Repositories
             {
                 CustomerId = customerId,
                 BoatId = boatId,
-                TripId = null, // No trip for boat booking
-                NumberOfPeople = 0, // Assign if necessary
+                TripId = null, 
+                NumberOfPeople = 0, 
                 BookingDate = DateTime.UtcNow,
-                DurationHours = 0, // Set duration if applicable
-                TotalPrice = 0, // Placeholder, update based on services
+                DurationHours = 0, 
+                TotalPrice = 0, 
                 Status = "Booked"
             };
 
             _context.BoatBookings.Add(booking);
             await _context.SaveChangesAsync();
 
-            // Handle additional services
             if (serviceIds.Any())
             {
                 var additionalServices = await _context.BookingAdditions

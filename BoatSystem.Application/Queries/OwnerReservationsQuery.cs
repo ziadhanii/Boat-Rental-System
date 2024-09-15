@@ -27,15 +27,14 @@ namespace BoatSystem.Application.Queries
         {
             var reservations = await _reservationRepository.GetAllIncludingDetailsAsync();
 
-            // Filter reservations based on the ownerId
             var ownerReservations = reservations.Where(r => r.Boat.OwnerId == request.OwnerId);
 
             return ownerReservations.Select(r => new ReservationDto
             {
                 Id = r.Id,
-                CustomerName = r.Customer.FullName, // Assuming Customer has a FullName property
-                TripName = r.Trip.Name, // Assuming Trip has a Name property
-                BoatName = r.Boat.Name, // Assuming Boat has a Name property
+                CustomerName = r.Customer.FullName, 
+                TripName = r.Trip.Name, 
+                BoatName = r.Boat.Name, 
                 NumPeople = r.NumPeople,
                 TotalPrice = r.TotalPrice,
                 ReservationDate = r.ReservationDate,

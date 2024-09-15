@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace BoatSystem.Application.Commands.BoatCommands
 {
-    // تعريف الأمر UpdateBoatCommand
     public class UpdateBoatCommand : IRequest<bool>
     {
         public int Id { get; set; }
@@ -16,7 +15,6 @@ namespace BoatSystem.Application.Commands.BoatCommands
         public int OwnerId { get; set; }
     }
 
-    // تعريف المعالج UpdateBoatCommandHandler
     public class UpdateBoatCommandHandler : IRequestHandler<UpdateBoatCommand, bool>
     {
         private readonly IBoatRepository _boatRepository;
@@ -31,10 +29,9 @@ namespace BoatSystem.Application.Commands.BoatCommands
             var boat = await _boatRepository.GetByIdAsync(request.Id);
             if (boat == null)
             {
-                return false; // قارب غير موجود
+                return false; 
             }
 
-            // تحديث الخصائص
             boat.Name = request.Name;
             boat.Description = request.Description;
             boat.Capacity = request.Capacity;
@@ -43,7 +40,7 @@ namespace BoatSystem.Application.Commands.BoatCommands
             boat.UpdatedAt = DateTime.UtcNow;
 
             await _boatRepository.UpdateAsync(boat);
-            return true; // التحديث ناجح
+            return true; 
         }
     }
 }

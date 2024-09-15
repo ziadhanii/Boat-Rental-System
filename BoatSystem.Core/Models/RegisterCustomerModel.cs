@@ -16,7 +16,7 @@ namespace BoatSystem.Application.Models
             public string Password { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public decimal? InitialWalletBalance { get; set; } // Nullable للسماح بقيمة مبدئية غير محددة
+            public decimal? InitialWalletBalance { get; set; } 
         }
     }
 

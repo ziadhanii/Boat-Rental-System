@@ -12,9 +12,9 @@ namespace BoatSystem.Core.Interfaces
         Task AddAsync(Customer customer);
         Task UpdateAsync(Customer customer);
         Task DeleteAsync(int id);
-        Task<IEnumerable<Customer>> GetCustomersByUserIdAsync(string userId); // الاحتفاظ بهذه الطريقة
+        Task<IEnumerable<Customer>> GetCustomersByUserIdAsync(string userId);
         Task<bool> AnyAsync(Expression<Func<Customer, bool>> predicate);
-        Task<IEnumerable<Customer>> GetByUserIdAsync(string userId); // أعدت هذه الطريقة
+        Task<IEnumerable<Customer>> GetByUserIdAsync(string userId); 
         Task<int?> GetCustomerIdByUserIdAsync(string userId);
 
     }

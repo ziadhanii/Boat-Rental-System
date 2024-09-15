@@ -1,5 +1,4 @@
-﻿// Infrastructure/Repositories/CancellationRepository.cs
-using BoatSystem.Core.Entities;
+﻿using BoatSystem.Core.Entities;
 using BoatSystem.Core.Interfaces;
 using BoatSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

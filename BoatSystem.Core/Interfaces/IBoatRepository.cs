@@ -11,6 +11,6 @@ public interface IBoatRepository
     Task<IEnumerable<Boat>> GetBoatsByOwnerIdAsync(int ownerId);
     Task<IEnumerable<Boat>> GetBoatsByNameAsync(string name);
     Task<IEnumerable<Boat>> GetUnapprovedBoatsAsync();
-    Task<IEnumerable<BoatDto>> GetAvailableBoatsAsync(); // تأكد من وجود هذه الطريقة
+    Task<IEnumerable<BoatDto>> GetAvailableBoatsAsync(); 
 
 }

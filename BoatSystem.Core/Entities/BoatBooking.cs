@@ -18,9 +18,8 @@ namespace BoatSystem.Core.Entities
         public DateTime? CanceledAt { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime CancellationDeadline { get; set; } // إضافة هذا الحقل
+        public DateTime CancellationDeadline { get; set; }
 
-        // Navigation properties
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
 

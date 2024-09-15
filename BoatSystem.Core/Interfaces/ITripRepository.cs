@@ -13,6 +13,6 @@ namespace BoatSystem.Core.Repositories
         Task<IEnumerable<Trip>> GetByOwnerIdAsync(int ownerId);
         Task<IEnumerable<Trip>> GetAvailableTripsAsync();
         Task<bool> ExistsAsync(int tripId);
-        Task<Boat> GetBoatByTripIdAsync(int tripId); // إضافة هذا التعريف
+        Task<Boat> GetBoatByTripIdAsync(int tripId); 
     }
 }

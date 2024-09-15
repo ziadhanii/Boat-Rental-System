@@ -55,7 +55,7 @@ namespace BoatSystem.Infrastructure.Repositories
         public async Task<IEnumerable<Trip>> GetAvailableTripsAsync()
         {
             return await _context.Trips
-                .Where(trip => trip.Status == "Available") // تأكد من أن حالة الرحلة هي "Available"
+                .Where(trip => trip.Status == "Available") 
                 .ToListAsync();
         }
 
@@ -66,7 +66,6 @@ namespace BoatSystem.Infrastructure.Repositories
 
         public async Task<Boat> GetBoatByTripIdAsync(int tripId)
         {
-            // الحصول على القارب المرتبط بالرحلة
             var trip = await _context.Trips
                 .Include(t => t.Boat)
                 .FirstOrDefaultAsync(t => t.Id == tripId);
